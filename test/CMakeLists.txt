@@ -6,11 +6,13 @@ include_directories(${GTEST_INCLUDE_DIRS})
 
 set(TEST_SRCS
     "cube_3.cpp"
+    "cube_4.cpp"
     "array2d.cpp"
 )
 
 set(TEST_ASSETS
     "in_test_3"
+    "in_test_4"
 )
 
 add_executable(test_all "test_all.cpp" ${TEST_SRCS})

@@ -6,7 +6,9 @@
 
 Cube::Cube()
     : size( 0 )
-    , move_aux_arr( 0 ) {}
+    , move_aux_arr( 0 )
+    , is_solved( false )
+    , is_solved_updated( false ) {}
 
 Cube::Cube( uint size ) 
 { 
@@ -52,6 +54,8 @@ Cube & Cube::operator=( Cube && other )
     this->size = other.size;
     this->move_aux_arr = other.move_aux_arr;
     this->num_moves = other.num_moves;
+    this->is_solved = other.is_solved;
+    this->is_solved_updated = other.is_solved_updated;
     for( ushort i = 0; i < Face::_NUM_CUBE_FACES; ++i )
         this->cube[ i ] = std::move( other.cube[ i ] );
 
@@ -142,6 +146,9 @@ void Cube::copyTo( Cube & other ) const
 
     for( uint i = 0; i < Face::_NUM_CUBE_FACES; ++i )
         this->cube[ i ].copyTo( other.cube[ i ] );
+
+    other.is_solved = this->is_solved;
+    other.is_solved_updated = this->is_solved_updated;
 }
 
 void Cube::makeMove( uint move )
@@ -160,6 +167,8 @@ void Cube::makeMove( uint move )
 
     // Front (0), back (1), up (2), down (3), left (4), right (5).
     Face::TYPES face = ( Face::TYPES )( move % Face::_NUM_CUBE_FACES );
+
+    this->is_solved_updated = false;
 
     // Switch 4 segments
     switch( face )
@@ -379,7 +388,7 @@ void Cube::makeMove( uint move )
     }
     case Face::TYPES::RIGHT:
     {
-        // [ 0 1 2 3 ]]
+        // [ 0 1 2 3 ]
         switch( move_type )
         {
         case Move::TYPES::ROT90:
@@ -506,6 +515,33 @@ std::string Cube::getString()
 
     delete[] lines;
     return str;
+}
+
+bool Cube::isSolved()
+{
+    if( this->is_solved_updated )
+        return this->is_solved;
+
+    for( uint i = 0; i < Face::_NUM_CUBE_FACES; ++i )
+    {
+        char e = this->cube[ i ].m[ 0 ][ 0 ];
+        for( uint j = 0; j < this->size; ++j )
+        {
+            for( uint k = 0; k < this->size; ++k )
+            {
+                if( this->cube[ i ].m[ j ][ k ] != e )
+                {
+                    this->is_solved = false;
+                    this->is_solved_updated = true;
+                    return this->is_solved;
+                }
+            }
+        }
+    }
+
+    this->is_solved = true;
+    this->is_solved_updated = true;
+    return this->is_solved;
 }
 
 void Cube::rotateF90( uint level )

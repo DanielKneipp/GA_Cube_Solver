@@ -37,10 +37,13 @@ public:
     void copyTo( Cube& other ) const;
     void makeMove( uint move );
     std::string getString();
+    bool isSolved();
 
 private:
     uint num_moves;
     char * move_aux_arr;
+    bool is_solved;
+    bool is_solved_updated;
 
     void rotateF90( uint level );
     void rotateF90i( uint level ); // disabled
@@ -66,9 +69,9 @@ struct Move
     {
         // if a number k is odd, than it has the same number
         // of movements as the k-1 number
-        uint s_aux;
+        uint s_aux = cube_size;
         if( cube_size % 2 > 0 )
-            s_aux = cube_size - 1;
+            s_aux--;
 
         uint levels = s_aux / 2;
 
