@@ -181,7 +181,9 @@ void Cube::makeMove( uint move )
         }
         case Move::TYPES::ROT90I:
         {
-            this->rotateF90i( level );
+            this->rotateF90( level );
+            this->rotateF90( level );
+            this->rotateF90( level );
 
             if( level == 0 )
                 this->cube[ face ].rot90i();
@@ -190,7 +192,8 @@ void Cube::makeMove( uint move )
         }
         case Move::TYPES::ROT180:
         {
-            this->rotateF180( level );
+            this->rotateF90( level );
+            this->rotateF90( level );
 
             if( level == 0 )
                 this->cube[ face ].rot180();

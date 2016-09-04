@@ -43,8 +43,8 @@ private:
     char * move_aux_arr;
 
     void rotateF90( uint level );
-    void rotateF90i( uint level );
-    void rotateF180( uint level );
+    void rotateF90i( uint level ); // disabled
+    void rotateF180( uint level ); // disabled
     void rotateB90( uint level );
     void rotateU90( uint level );
     void rotateD90( uint level );
