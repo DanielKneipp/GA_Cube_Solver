@@ -791,13 +791,12 @@ void Cube::rotateR90( uint level )
     {
         // Set the first column of the "right" face to "down" (reversed)
         this->cube[ Face::TYPES::DOWN ].m[ i ][ this->size - level - 1 ] =
-            this->cube[ Face::TYPES::RIGHT ].m[ this->size - i - 1 ][ level ];
+            this->cube[ Face::TYPES::BACK ].m[ this->size - i - 1 ][ level ];
     }
 
     for( uint i = 0; i < this->size; ++i )
     {
         // Set the last column of the "up" face to "right"
-        this->cube[ Face::TYPES::RIGHT ].m[ this->size - i - 1 ][ level ] = this->move_aux_arr[ i ];
+        this->cube[ Face::TYPES::BACK ].m[ this->size - i - 1 ][ level ] = this->move_aux_arr[ i ];
     }
 }
-

@@ -272,6 +272,28 @@ TEST_F( _Cube3, RotL90 )
     EXPECT_EQ( c.cube[ Face::DOWN ].m[ 2 ][ 0 ], 'G' );
 }
 
+TEST_F( _Cube3, RotR90 )
+{
+    // R
+    c.makeMove( 5 );
+
+    EXPECT_EQ( c.cube[ Face::FRONT ].m[ 0 ][ 2 ], 'O' );
+    EXPECT_EQ( c.cube[ Face::FRONT ].m[ 1 ][ 2 ], 'Y' );
+    EXPECT_EQ( c.cube[ Face::FRONT ].m[ 2 ][ 2 ], 'G' );
+
+    EXPECT_EQ( c.cube[ Face::UP ].m[ 0 ][ 2 ], 'B' );
+    EXPECT_EQ( c.cube[ Face::UP ].m[ 1 ][ 2 ], 'O' );
+    EXPECT_EQ( c.cube[ Face::UP ].m[ 2 ][ 2 ], 'W' );
+
+    EXPECT_EQ( c.cube[ Face::BACK ].m[ 0 ][ 0 ], 'Y' );
+    EXPECT_EQ( c.cube[ Face::BACK ].m[ 1 ][ 0 ], 'G' );
+    EXPECT_EQ( c.cube[ Face::BACK ].m[ 2 ][ 0 ], 'W' );
+
+    EXPECT_EQ( c.cube[ Face::DOWN ].m[ 0 ][ 2 ], 'O' );
+    EXPECT_EQ( c.cube[ Face::DOWN ].m[ 1 ][ 2 ], 'B' );
+    EXPECT_EQ( c.cube[ Face::DOWN ].m[ 2 ][ 2 ], 'O' );
+}
+
 TEST_F( _Cube3, CopyTo )
 { 
     Cube c2( c.size );
