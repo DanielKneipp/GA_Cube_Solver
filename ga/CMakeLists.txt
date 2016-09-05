@@ -3,12 +3,17 @@ project(ga)
 set(ga_cpps
     "main.cpp"
     "ga.cpp"
+    "cube_sol.cpp"
+    "cube_prob.cpp"
 )
 
 set(ga_hpps
     "ga.hpp"
+    "cube_sol.hpp"
+    "cube_prob.hpp"
+    "utils.hpp"
 )
 
-add_executable(cube_solver ${ga_cpps} ${ga_hpps})
-target_link_libraries(cube_solver ${CUBE_LIB})
-set_property(TARGET cube_solver PROPERTY PROJECT_LABEL "ga")
+add_executable(cube_ga_solver ${ga_cpps} ${ga_hpps})
+target_link_libraries(cube_ga_solver ${CUBE_LIB})
+set_property(TARGET cube_ga_solver PROPERTY PROJECT_LABEL "ga")
