@@ -22,3 +22,21 @@ Logger::Logger()
 
 Logger::~Logger()
 {}
+
+void Logger::defineOutputFileName( CubeGAConfig & ga_config, CubeProblem & prob )
+{
+    this->output_file = prob.instance_name + "_"
+        + ga_config.CONFIG_NAME + "_"
+        + getSuffixDateTime();
+
+    this->output_folder_file = this->output_folder + this->output_file;
+}
+
+void Logger::setOutputFolder( const std::string & path )
+{
+    this->output_folder = path;
+    this->output_folder_file = this->output_folder + this->output_file;
+}
+
+void Logger::storeStats( std::vector<CubeSolution> sols )
+{}

@@ -1,15 +1,25 @@
 #pragma once
 
 #include <string>
+#include <vector>
+
+#include "cube_prob.hpp"
+#include "cube_sol.hpp"
+#include "ga_conf.hpp"
 
 class Logger
 {
 public:
-    std::string output_folder;
+    
     std::string output_file;
     std::string output_folder_file;
 
     Logger();
     ~Logger();
-    void defineOutputFileName();
+    void defineOutputFileName( CubeGAConfig & ga_config, CubeProblem & prob );
+    void setOutputFolder( const std::string & path );
+    void storeStats( std::vector< CubeSolution > sols );
+
+private:
+    std::string output_folder;
 };
