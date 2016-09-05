@@ -8,6 +8,8 @@
 #include "ga_conf.hpp"
 #include "logger.hpp"
 
+typedef std::vector< CubeSolution > CubeSols;
+
 class CubeGA
 {
 public:
@@ -21,5 +23,8 @@ public:
     ~CubeGA();
     void run();
     void setOutputFolder( std::string & path );
+
+private:
+    CubeSols genRandonIndividuals();
 };
 

@@ -40,11 +40,12 @@ void Logger::setOutputFolder( const std::string & path )
 
 void Logger::storeStats( std::vector< CubeSolution > sols )
 {
-    /* TODO: Get the best, worst, mean, number of clones
-    and children better than the mean fitness of their parents*/
+    //TODO: Get the best, worst, mean
+    
+    //TODO: Get the number of clones and children better than the mean fitness of their parents
 }
 
 void Logger::plotStoredData()
 {
-    // TODO: Call gnuplot script
+    //TODO: Call gnuplot script
 }

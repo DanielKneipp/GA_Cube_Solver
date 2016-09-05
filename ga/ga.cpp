@@ -2,11 +2,12 @@
 
 #include <stdexcept>
 
+#include "utils.hpp"
+
 #define castMicro( t ) std::chrono::duration_cast< std::chrono::microseconds >( t )
 #define getTimeNow() std::chrono::steady_clock::now()
 
 typedef std::chrono::steady_clock::time_point TimePoint;
-typedef std::vector< CubeSolution > CubeSols;
 
 inline void calcAllFits( CubeSols & sols, CubeProblem & prob )
 {
@@ -18,6 +19,18 @@ CubeGA::CubeGA() {}
 
 CubeGA::~CubeGA() {}
 
+CubeSols CubeGA::genRandonIndividuals( )
+{
+    CubeSols sols( this->config.NUM_INDIV );
+    uint num_moves = Move::generate( this->problem.cube.size );
+
+    for( uint i = 0; i < this->config.NUM_INDIV; ++i )
+        for( uint j = 0; j < _NUM_MOVES; ++j )
+            sols[ i ].moves[ j ] = genIntRandNumber( ( uint )0, num_moves - 1 );
+
+    return sols;
+}
+
 void CubeGA::run()
 {
     // Verifies if the configuration was loaded
@@ -27,22 +40,29 @@ void CubeGA::run()
     // Create output file name with path
     this->logger.defineOutputFileName( this->config, this->problem );
 
-    // TODO: Generate individuals
-    CubeSols sols( this->config.NUM_INDIV );
+    // Generate individuals
+    CubeSols sols = this->genRandonIndividuals();
 
     // Calculate Fitness
     calcAllFits( sols, this->problem );
 
     TimePoint start_t = getTimeNow();
+
     // Starting evolutionary process
+    for( uint i = 0; i < this->config.NUM_GENS; ++i )
+    {
+        //TODO: Select the 10% best individuals (elites)
 
-        // TODO: Select Individuals (with or without elitism)
+        //TODO: Select Individuals (with or without elitism)
 
-        // TODO: Crossover or mutate the individuals
+        //TODO: Crossover or mutate the individuals
 
-        // TODO: Calculate Fitness again
+        //TODO: Calculate Fitness of the children and mutated
 
-        // TODO: Call logger to save statistics
+        //TODO: Join the elites to the mutated and children
+
+        //TODO: Call logger to save statistics
+    }
 
     TimePoint end_t = getTimeNow();
     this->executionTime = castMicro( end_t - start_t );
