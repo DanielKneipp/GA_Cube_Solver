@@ -33,7 +33,7 @@ public:
     Cube& operator=( Cube && other );
     void create( uint size );
     void clear();
-    void readFromFile( std::string&& f );
+    void readFromFile( const std::string& f );
     void copyTo( Cube& other ) const;
     void makeMove( uint move );
     std::string getString();

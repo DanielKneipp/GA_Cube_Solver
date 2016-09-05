@@ -85,7 +85,7 @@ void Cube::clear()
     this->size = 0;
 }
 
-void Cube::readFromFile( std::string&& f )
+void Cube::readFromFile( const std::string& f )
 {
     std::string wrd;
     std::ifstream f_obj;

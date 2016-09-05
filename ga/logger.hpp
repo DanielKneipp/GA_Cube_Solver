@@ -19,6 +19,7 @@ public:
     void defineOutputFileName( CubeGAConfig & ga_config, CubeProblem & prob );
     void setOutputFolder( const std::string & path );
     void storeStats( std::vector< CubeSolution > sols );
+    void plotStoredData();
 
 private:
     std::string output_folder;

@@ -15,6 +15,7 @@ public:
     CubeProblem();
     ~CubeProblem();
 
-    void evalSolution( CubeSolution& sol );
+    void evalSolution( CubeSolution & sol );
+    void load( std::string & file );
 };
 

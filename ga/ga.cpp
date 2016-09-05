@@ -2,9 +2,17 @@
 
 #include <stdexcept>
 
-typedef std::chrono::steady_clock::time_point TimePoint;
+#define castMicro( t ) std::chrono::duration_cast< std::chrono::microseconds >( t )
+#define getTimeNow() std::chrono::steady_clock::now()
 
-inline TimePoint getTimeNow() { return std::chrono::steady_clock::now(); }
+typedef std::chrono::steady_clock::time_point TimePoint;
+typedef std::vector< CubeSolution > CubeSols;
+
+inline void calcAllFits( CubeSols & sols, CubeProblem & prob )
+{
+    for( CubeSolution & sol : sols )
+        prob.evalSolution( sol );
+}
 
 CubeGA::CubeGA() {}
 
@@ -12,18 +20,20 @@ CubeGA::~CubeGA() {}
 
 void CubeGA::run()
 {
-    TimePoint start_t = getTimeNow();
-
     // Verifies if the configuration was loaded
     if( !this->config.is_loaded )
         throw std::exception( "Configuration wasn't loaded" );
 
-    // TODO: Create output file name with path
+    // Create output file name with path
+    this->logger.defineOutputFileName( this->config, this->problem );
 
     // TODO: Generate individuals
+    CubeSols sols( this->config.NUM_INDIV );
 
-    // TODO: Calculate Fitness
+    // Calculate Fitness
+    calcAllFits( sols, this->problem );
 
+    TimePoint start_t = getTimeNow();
     // Starting evolutionary process
 
         // TODO: Select Individuals (with or without elitism)
@@ -32,10 +42,16 @@ void CubeGA::run()
 
         // TODO: Calculate Fitness again
 
-        /* TODO: Get the best, worst, mean, number of clones 
-           and children better than the mean fitness of their parents*/
-
-    // TODO: Plot the result
+        // TODO: Call logger to save statistics
 
     TimePoint end_t = getTimeNow();
+    this->executionTime = castMicro( end_t - start_t );
+
+    // Plot the result
+    this->logger.plotStoredData();
+}
+
+void CubeGA::setOutputFolder( std::string & path )
+{
+    this->logger.setOutputFolder( path );
 }
