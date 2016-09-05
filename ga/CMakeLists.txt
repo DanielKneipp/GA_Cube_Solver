@@ -5,12 +5,16 @@ set(ga_cpps
     "ga.cpp"
     "cube_sol.cpp"
     "cube_prob.cpp"
+    "logger.cpp"
+    "ga_conf.cpp"
 )
 
 set(ga_hpps
     "ga.hpp"
     "cube_sol.hpp"
     "cube_prob.hpp"
+    "logger.hpp"
+    "ga_conf.hpp"
     "utils.hpp"
 )
 

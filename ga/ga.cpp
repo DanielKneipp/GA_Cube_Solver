@@ -6,9 +6,7 @@ typedef std::chrono::steady_clock::time_point TimePoint;
 
 inline TimePoint getTimeNow() { return std::chrono::steady_clock::now(); }
 
-CubeGA::CubeGA() 
-    : output_folder( "" )
-{}
+CubeGA::CubeGA() {}
 
 CubeGA::~CubeGA() {}
 
