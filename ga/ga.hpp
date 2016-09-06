@@ -25,6 +25,10 @@ public:
     void setOutputFolder( std::string & path );
 
 private:
-    CubeSols genRandonIndividuals();
+    CubeSols genRandSols();
+    CubeSols moveFlipMutation( CubeSols & sols, float prob );
+    CubeSols cutPointCrossover( CubeSols & sols, float prob );
+    CubeSols tournament( CubeSols & sols, uint size, uint num_sols_to_select );
+    CubeSols getBest( CubeSols & sols, uint num_of_best );
 };
 

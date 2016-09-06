@@ -119,7 +119,7 @@ void Logger::plotStoredData()
 {
     // Call gnuplot script
 
-    // gnuplot -e "filename='2015-10-02_20-44-26__120_3_2_2'; datatitle='120_3_2_2'" plotGAData.gp
+    // gnuplot -e "filename='in1_C1_2015-10-02_20-44-26'" plotGAData.gp
     std::string command;
     command = "gnuplot -e \"";
     command += std::string( "filename='" ) + this->output_folder_file + "'\" ";

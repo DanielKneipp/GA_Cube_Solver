@@ -1,8 +1,5 @@
 #pragma once
 
-#define _NUM_MOVES 100
-#define _NAM -1 // Not a move
-
 class CubeSolution
 {
 public:
@@ -10,14 +7,18 @@ public:
     /// <summary> Not a move </summary>
     static const int NAM = -1;
 
-    int moves[ _NUM_MOVES ];
+    int moves[ CubeSolution::NUM_MOVES ];
     float fitness;
 
     CubeSolution();
+    CubeSolution( const CubeSolution & other );
     ~CubeSolution();
 
+
+    CubeSolution & operator = ( const CubeSolution & other );
     bool operator < ( const CubeSolution & other );
     bool operator <= ( const CubeSolution & other );
     bool operator > ( const CubeSolution & other );
     bool operator >= ( const CubeSolution & other );
+    bool operator == ( const CubeSolution & other );
 };

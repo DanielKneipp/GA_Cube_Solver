@@ -19,16 +19,36 @@ CubeGA::CubeGA() {}
 
 CubeGA::~CubeGA() {}
 
-CubeSols CubeGA::genRandonIndividuals( )
+CubeSols CubeGA::genRandSols( )
 {
     CubeSols sols( this->config.NUM_INDIV );
     uint num_moves = Move::generate( this->problem.cube.size );
 
     for( uint i = 0; i < this->config.NUM_INDIV; ++i )
-        for( uint j = 0; j < _NUM_MOVES; ++j )
+        for( uint j = 0; j < CubeSolution::NUM_MOVES; ++j )
             sols[ i ].moves[ j ] = genIntRandNumber( ( uint )0, num_moves - 1 );
 
     return sols;
+}
+
+CubeSols CubeGA::moveFlipMutation( CubeSols & sols, float prob )
+{
+    return CubeSols();
+}
+
+CubeSols CubeGA::cutPointCrossover( CubeSols & sols, float prob )
+{
+    return CubeSols();
+}
+
+CubeSols CubeGA::tournament( CubeSols & sols, uint size, uint num_sols_to_select )
+{
+    return CubeSols();
+}
+
+CubeSols CubeGA::getBest( CubeSols & sols, uint num_of_best )
+{
+    return CubeSols();
 }
 
 void CubeGA::run()
@@ -41,7 +61,7 @@ void CubeGA::run()
     this->logger.defineOutputFileName( this->config, this->problem );
 
     // Generate individuals
-    CubeSols sols = this->genRandonIndividuals();
+    CubeSols sols = this->genRandSols();
 
     // Calculate Fitness
     calcAllFits( sols, this->problem );
