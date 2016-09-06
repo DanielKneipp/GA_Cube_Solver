@@ -26,8 +26,36 @@ public:
 
 private:
     CubeSols genRandSols();
-    CubeSols moveFlipMutation( CubeSols & sols, float prob );
-    CubeSols cutPointCrossover( CubeSols & sols, float prob );
+    // ********************************************************************************
+    /// <summary>
+    /// Changes a movement randomly according to the probability <paramref name="prob_m"/>. 
+    /// A individual has a probability <paramref name="prob_m"/> of be chosen.
+    /// </summary>
+    /// <param name="sols"> Individuals (solutions) </param>
+    /// <param name="prob_m"> Probability of a individual be chosen </param>
+    /// <param name="prob_gene"> Probability of a gene be chosen to be mutated </param>
+    /// <returns> Mutated individuals </returns>
+    /// <created>Daniel Kneipp,9/6/2016</created>
+    /// <changed>Daniel Kneipp,9/6/2016</changed>
+    // ********************************************************************************
+    CubeSols moveFlipMutation( CubeSols & sols, float prob_m, float prob_gene );
+    // ********************************************************************************
+    /// <summary>
+    /// Applies N-cutpoint crossover operator on the individuals.
+    /// </summary>
+    /// <param name="sols"> Individuals (Parents) </param>
+    /// <param name="prob"> Probability of two Individuals be chosen to generate
+    /// two children </param>
+    /// <param name="n_cuts"> Number of cut points </param>
+    /// <returns> Children </returns>
+    /// <remarks> 
+    /// The number of parents (<paramref name="sols"/>) must be even
+    /// and should be shuffled because the parents will be choose pairwise 
+    /// </remarks>
+    /// <created>Daniel Kneipp,9/6/2016</created>
+    /// <changed>Daniel Kneipp,9/6/2016</changed>
+    // ********************************************************************************
+    CubeSols cutPointCrossover( CubeSols & sols, float prob, uint n_cuts = 1 );
     CubeSols tournament( CubeSols & sols, uint size, uint num_sols_to_select );
     CubeSols getBest( CubeSols & sols, uint num_of_best );
 };

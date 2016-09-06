@@ -66,7 +66,7 @@ T genIntRandNumber( const T min, const T max )
 
 template< class T_ind >
 std::vector< T_ind > getBestNSols( const std::vector< T_ind >& sols,
-                                          const unsigned numSols )
+                                   const unsigned numSols )
 {
     std::vector< T_ind > partialSortedSols = sols;
     std::partial_sort( partialSortedSols.begin(),
@@ -83,7 +83,7 @@ std::vector< T_ind > getBestNSols( const std::vector< T_ind >& sols,
 
 template< class T_ind >
 std::vector< T_ind > getWorstNSols( const std::vector< T_ind >& sols,
-                                           const unsigned numSols )
+                                    const unsigned numSols )
 {
     std::vector< T_ind > partialSortedSols = sols;
     std::partial_sort( partialSortedSols.begin(),
