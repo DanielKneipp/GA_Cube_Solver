@@ -7,6 +7,9 @@
 #include <iomanip>
 #include <algorithm>
 #include <stdexcept>
+#include <cstdlib>
+
+#define _GNUPLOT_SCRIPT "plotGAData.gp" 
 
 std::string getSuffixDateTime()
 {
@@ -49,7 +52,7 @@ std::ofstream openOutFile( std::string path_file )
     std::ofstream out_file;
     out_file.open( path_file, std::ios::app );
 
-    if( !out_file.is_open )
+    if( !out_file.is_open() )
     {
         throw std::exception( std::string(
             std::string( "The output file (" ) += path_file += ") couldn't be opened"
@@ -83,7 +86,7 @@ void Logger::storeStats(
     float acc = sols[ 0 ].fitness,
         old_f = sols[ 0 ].fitness,
         min = sorted_sols[ 0 ].fitness,
-        max = sorted_sols[ sorted_sols.size - 1 ].fitness;
+        max = sorted_sols[ sorted_sols.size() - 1 ].fitness;
 
     for( std::size_t i = 1; i < sorted_sols.size(); ++i )
     {
@@ -114,5 +117,13 @@ void Logger::storeStats(
 
 void Logger::plotStoredData()
 {
-    //TODO: Call gnuplot script
+    // Call gnuplot script
+
+    // gnuplot -e "filename='2015-10-02_20-44-26__120_3_2_2'; datatitle='120_3_2_2'" plotGAData.gp
+    std::string command;
+    command = "gnuplot -e \"";
+    command += std::string( "filename='" ) + this->output_folder_file + "'\" ";
+    command += _GNUPLOT_SCRIPT;
+
+    std::system( command.c_str() );
 }

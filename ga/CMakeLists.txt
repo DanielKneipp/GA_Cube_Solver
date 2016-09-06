@@ -21,3 +21,6 @@ set(ga_hpps
 add_executable(cube_ga_solver ${ga_cpps} ${ga_hpps})
 target_link_libraries(cube_ga_solver ${CUBE_LIB})
 set_property(TARGET cube_ga_solver PROPERTY PROJECT_LABEL "ga")
+
+install(TARGETS cube_ga_solver DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(FILES plotGAData.gp DESTINATION ${CMAKE_INSTALL_PREFIX})
