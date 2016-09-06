@@ -16,9 +16,17 @@ public:
 
     Logger();
     ~Logger();
-    void defineOutputFileName( CubeGAConfig & ga_config, CubeProblem & prob );
+    void defineOutputFileName( 
+        CubeGAConfig & ga_config, 
+        CubeProblem & prob 
+    );
     void setOutputFolder( const std::string & path );
-    void storeStats( std::vector< CubeSolution > sols );
+    void writeHeader();
+    void storeStats( 
+        std::vector< CubeSolution > & sols, 
+        unsigned num_better_children,
+        unsigned num_worse_children
+    );
     void plotStoredData();
 
 private:
