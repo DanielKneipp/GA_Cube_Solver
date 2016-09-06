@@ -24,3 +24,12 @@ set_property(TARGET cube_ga_solver PROPERTY PROJECT_LABEL "ga")
 
 install(TARGETS cube_ga_solver DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(FILES plotGAData.gp DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+option(USE_STATIC_SEED "Use static seed for random number generator." OFF)
+
+if(USE_STATIC_SEED)
+    add_definitions(-DUSE_STATIC_SEED)
+    message(STATUS "Using STATIC seed for random number generator")
+else()
+    message(STATUS "Using DYNAMIC seed for random number generator")
+endif()

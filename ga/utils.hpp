@@ -4,10 +4,23 @@
 #include <random>
 #include <cmath>    // std::nextafter()
 
+#ifdef USE_STATIC_SEED 
+
+#pragma message("USING STATIC SEED")
+
+static std::mt19937 mt = std::mt19937( 1 );
+
+#else
+
+#pragma message("USING DYNAMIC SEED")
+
 /** Seed. */
 static std::random_device rd;
 /** Seed being used to feed the random number generator. */
 static std::mt19937 mt = std::mt19937( rd() );
+
+#endif // !USE_STATIC_SEED
+
 
 /**
  * @brief genRealRandNumber     Generate a random real number between
