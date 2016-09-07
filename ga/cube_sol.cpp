@@ -53,3 +53,27 @@ bool CubeSolution::operator==( const CubeSolution & other )
 {
     return this->fitness == other.fitness;
 }
+
+void CubeSolution::moveNAMtoTheEnd()
+{
+    bool after_NAM = false;
+    for( unsigned i = 0, j = 0; i < CubeSolution::NUM_MOVES; ++i )
+    {
+        if( this->moves[ i ] != CubeSolution::NAM )
+        {
+            if( after_NAM )
+            {
+                this->moves[ j ] = this->moves[ i ];
+                this->moves[ i ] = CubeSolution::NAM;
+                after_NAM = false;
+                j = i;
+            }
+
+            ++j;
+        }
+        else
+        {
+            after_NAM = true;
+        }
+    }
+}

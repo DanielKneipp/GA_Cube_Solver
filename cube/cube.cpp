@@ -6,6 +6,7 @@
 
 Cube::Cube()
     : size( 0 )
+    , num_moves( 0 )
     , move_aux_arr( 0 )
     , is_solved( false )
     , is_solved_updated( false ) {}

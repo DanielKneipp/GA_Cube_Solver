@@ -25,6 +25,15 @@ public:
     void setOutputFolder( std::string & path );
 
 private:
+    // ********************************************************************************
+    /// <summary>
+    /// Generate individuals in a randomly way. Note that the CubeSolution::NAM is 
+    /// included in the move range.
+    /// </summary>
+    /// <returns>Generated individuals</returns>
+    /// <created>Daniel Kneipp,9/7/2016</created>
+    /// <changed>Daniel Kneipp,9/7/2016</changed>
+    // ********************************************************************************
     CubeSols genRandSols();
     // ********************************************************************************
     /// <summary>

@@ -14,11 +14,12 @@ public:
     CubeSolution( const CubeSolution & other );
     ~CubeSolution();
 
-
     CubeSolution & operator = ( const CubeSolution & other );
     bool operator < ( const CubeSolution & other );
     bool operator <= ( const CubeSolution & other );
     bool operator > ( const CubeSolution & other );
     bool operator >= ( const CubeSolution & other );
     bool operator == ( const CubeSolution & other );
+
+    void moveNAMtoTheEnd();
 };

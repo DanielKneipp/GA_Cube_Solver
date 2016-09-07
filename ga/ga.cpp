@@ -23,11 +23,15 @@ CubeGA::~CubeGA() {}
 CubeSols CubeGA::genRandSols( )
 {
     CubeSols sols( this->config.NUM_INDIV );
-    uint num_moves = Move::generate( this->problem.cube.size );
 
     for( uint i = 0; i < this->config.NUM_INDIV; ++i )
         for( uint j = 0; j < CubeSolution::NUM_MOVES; ++j )
-            sols[ i ].moves[ j ] = genIntRandNumber( ( uint )0, num_moves - 1 );
+        {
+            sols[ i ].moves[ j ] = genIntRandNumber< uint >( 
+                ( uint )0, 
+                this->problem.cube.num_moves - 1 
+            );
+        }
 
     return sols;
 }
@@ -49,7 +53,10 @@ CubeSols CubeGA::moveFlipMutation( CubeSols & sols, float prob_m, float prob_gen
                 p = genRealRandNumber< float >( 0, 1 );
                 if( p < prob_gene )
                 {
-                    int move = genIntRandNumber( 0, Move::NUM_MOVE_TYPES - 1 );
+                    int move = genIntRandNumber< int >( 
+                        CubeSolution::NAM, 
+                        this->problem.cube.num_moves - 1 
+                    );
                     m.moves[ i ] = move;
                     changed = true;
                 }
@@ -118,6 +125,10 @@ CubeSols CubeGA::cutPointCrossover(
                     new_children[ 0 ].moves[ k ] = sols[ i + 1 ].moves[ k ];
                 }
             }
+
+            // new_children[ 0 ].moveNAMtoTheEnd();
+            // new_children[ 1 ].moveNAMtoTheEnd();
+
             // Calculate the children fitness
             this->problem.evalSolution( new_children[ 0 ] );
             this->problem.evalSolution( new_children[ 1 ] );

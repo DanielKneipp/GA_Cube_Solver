@@ -22,6 +22,7 @@ class Cube
 {
 public:
     uint size;
+    uint num_moves;
     Array2D< char > cube[ Face::_NUM_CUBE_FACES ];
 
     Cube();
@@ -40,7 +41,6 @@ public:
     bool isSolved();
 
 private:
-    uint num_moves;
     char * move_aux_arr;
     bool is_solved;
     bool is_solved_updated;
