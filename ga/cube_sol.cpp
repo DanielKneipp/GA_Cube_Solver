@@ -29,27 +29,27 @@ CubeSolution & CubeSolution::operator=( const CubeSolution & other )
     return *this;
 }
 
-bool CubeSolution::operator<( const CubeSolution & other )
+bool CubeSolution::operator<( const CubeSolution & other ) const
 {
     return this->fitness < other.fitness;
 }
 
-bool CubeSolution::operator<=( const CubeSolution & other )
+bool CubeSolution::operator<=( const CubeSolution & other ) const
 {
     return this->fitness <= other.fitness;
 }
 
-bool CubeSolution::operator>( const CubeSolution & other )
+bool CubeSolution::operator>( const CubeSolution & other ) const
 {
     return this->fitness > other.fitness;
 }
 
-bool CubeSolution::operator>=( const CubeSolution & other )
+bool CubeSolution::operator>=( const CubeSolution & other ) const
 {
     return this->fitness >= other.fitness;
 }
 
-bool CubeSolution::operator==( const CubeSolution & other )
+bool CubeSolution::operator==( const CubeSolution & other ) const
 {
     return this->fitness == other.fitness;
 }

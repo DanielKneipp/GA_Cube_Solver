@@ -59,6 +59,12 @@ void CubeGAConfig::load( const std::string& file_name )
                 this->USE_ELIT = static_cast< bool >( std::stoi( tmpString ) );
                 count++;
             }
+            if( tmpString == "NUM_ELITES:" )
+            {
+                file >> tmpString;
+                this->NUM_ELITES = static_cast< uint >( std::stoi( tmpString ) );
+                count++;
+            }
             else if( tmpString == "CONFIG_NAME:" )
             {
                 file >> tmpString;
@@ -86,5 +92,6 @@ std::string CubeGAConfig::toString() const
         + std::string( "P_MUT: " ) + std::to_string( this->P_MUT ) + "\n"
         + std::string( "TOURN_SIZE: " ) + std::to_string( this->TOURN_SIZE ) + "\n"
         + std::string( "USE_ELIT: " ) + std::to_string( this->USE_ELIT ) + "\n"
+        + std::string( "NUM_ELITES: " ) + std::to_string( this->NUM_ELITES ) + "\n"
         + std::string( "CONFIG_NAME: " ) + this->CONFIG_NAME;
 }

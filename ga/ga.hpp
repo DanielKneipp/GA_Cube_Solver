@@ -27,14 +27,15 @@ public:
 private:
     // ********************************************************************************
     /// <summary>
-    /// Generate individuals in a randomly way. Note that the CubeSolution::NAM is 
+    /// Generate individuals in a randomly way. Note that the CubeSolution::NAM is
     /// included in the move range.
     /// </summary>
+    /// <param name="num_sols">Number of solutions (Population size)</param>
     /// <returns>Generated individuals</returns>
     /// <created>Daniel Kneipp,9/7/2016</created>
     /// <changed>Daniel Kneipp,9/7/2016</changed>
     // ********************************************************************************
-    CubeSols genRandSols();
+    CubeSols genRandSols( uint num_sols );
     // ********************************************************************************
     /// <summary>
     /// Changes a movement randomly according to the probability <paramref name="prob_m"/>. 
@@ -91,6 +92,5 @@ private:
     // ********************************************************************************
     CubeSols smartMovesMutation( CubeSols & sols, float prob_m );
     CubeSols tournament( CubeSols & sols, uint size, uint num_sols_to_select );
-    CubeSols getBest( CubeSols & sols, uint num_of_best );
 };
 

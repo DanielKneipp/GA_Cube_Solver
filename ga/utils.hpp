@@ -74,11 +74,29 @@ std::vector< T_ind > getBestNSols( const std::vector< T_ind >& sols,
                        partialSortedSols.end(),
                        []( const T_ind& a, const T_ind& b ) -> bool
                        {
-                           return a.perf > b.perf;
+                           return a > b;
                        });
 
     return std::vector< T_ind >( partialSortedSols.begin(),
                                  partialSortedSols.begin() + numSols );
+}
+
+template< class T_ind, class Compare >
+std::vector< T_ind > getNSols( 
+    const std::vector< T_ind >& sols,
+    const unsigned numSols,
+    Compare comp
+)
+{
+    std::vector< T_ind > partialSortedSols = sols;
+    std::partial_sort( partialSortedSols.begin(),
+        partialSortedSols.begin() + numSols,
+        partialSortedSols.end(),
+        comp
+    );
+
+    return std::vector< T_ind >( partialSortedSols.begin(),
+        partialSortedSols.begin() + numSols );
 }
 
 template< class T_ind >
@@ -91,7 +109,7 @@ std::vector< T_ind > getWorstNSols( const std::vector< T_ind >& sols,
                        partialSortedSols.end(),
                        []( const T_ind& a, const T_ind& b ) -> bool
                        {
-                           return a.perf < b.perf;
+                           return a < b;
                        });
 
     return std::vector< T_ind >( partialSortedSols.begin(),

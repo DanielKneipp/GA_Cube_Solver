@@ -18,6 +18,8 @@ struct CubeGAConfig
     uint TOURN_SIZE;
     /// Specifies if it should use elitism 
     bool USE_ELIT;
+    /// Number of elites
+    uint NUM_ELITES;
     /// Configuration name
     std::string CONFIG_NAME;
     bool is_loaded;

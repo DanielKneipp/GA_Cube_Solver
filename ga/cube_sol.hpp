@@ -15,11 +15,11 @@ public:
     ~CubeSolution();
 
     CubeSolution & operator = ( const CubeSolution & other );
-    bool operator < ( const CubeSolution & other );
-    bool operator <= ( const CubeSolution & other );
-    bool operator > ( const CubeSolution & other );
-    bool operator >= ( const CubeSolution & other );
-    bool operator == ( const CubeSolution & other );
+    bool operator < ( const CubeSolution & other ) const;
+    bool operator <= ( const CubeSolution & other ) const;
+    bool operator > ( const CubeSolution & other ) const;
+    bool operator >= ( const CubeSolution & other ) const;
+    bool operator == ( const CubeSolution & other ) const;
 
     void moveNAMtoTheEnd();
 };

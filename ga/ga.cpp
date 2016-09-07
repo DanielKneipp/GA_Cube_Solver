@@ -20,11 +20,11 @@ CubeGA::CubeGA() {}
 
 CubeGA::~CubeGA() {}
 
-CubeSols CubeGA::genRandSols( )
+CubeSols CubeGA::genRandSols( uint num_sols )
 {
-    CubeSols sols( this->config.NUM_INDIV );
+    CubeSols sols( num_sols );
 
-    for( uint i = 0; i < this->config.NUM_INDIV; ++i )
+    for( uint i = 0; i < num_sols; ++i )
         for( uint j = 0; j < CubeSolution::NUM_MOVES; ++j )
         {
             sols[ i ].moves[ j ] = genIntRandNumber< uint >( 
@@ -152,6 +152,7 @@ CubeSols CubeGA::cutPointCrossover(
 
 CubeSols CubeGA::smartMovesMutation( CubeSols & sols, float prob_m )
 {
+
     return CubeSols();
 }
 
@@ -175,11 +176,6 @@ CubeSols CubeGA::tournament( CubeSols & sols, uint size, uint num_sols_to_select
     return CubeSols();
 }
 
-CubeSols CubeGA::getBest( CubeSols & sols, uint num_of_best )
-{
-    return CubeSols();
-}
-
 void CubeGA::run()
 {
     // Verifies if the configuration was loaded
@@ -190,7 +186,7 @@ void CubeGA::run()
     this->logger.defineOutputFileName( this->config, this->problem );
 
     // Generate individuals
-    CubeSols sols = this->genRandSols();
+    CubeSols sols = this->genRandSols( this->config.NUM_INDIV );
 
     // Calculate Fitness
     calcAllFits( sols, this->problem );
@@ -198,19 +194,48 @@ void CubeGA::run()
     TimePoint start_t = getTimeNow();
 
     // Starting evolutionary process
-    for( uint i = 0; i < this->config.NUM_GENS; ++i )
+    if( this->config.USE_ELIT )
     {
-        //TODO: Select the 10% best individuals (elites)
+        for( uint i = 0; i < this->config.NUM_GENS; ++i )
+        {
+            // Select n best individuals (elites)
+            CubeSols elites = getNSols(
+                sols,
+                this->config.NUM_ELITES,
+                []( const CubeSolution & s1, const CubeSolution & s2 ) -> bool
+                {
+                    return s1 < s2;
+                }
+            );
 
-        //TODO: Select Individuals (with or without elitism)
+            // Select n individuals, with n = this->config.NUM_INDIV - this->config.NUM_ELITES
+            CubeSols selected = tournament(
+                sols,
+                this->config.TOURN_SIZE,
+                this->config.NUM_ELITES - ( uint )elites.size()
+            );
 
-        //TODO: Crossover or mutate the individuals
+            // Crossover or mutate the individuals
+            uint num_better_children = 0, num_worse_children = 0;
+            CubeSols children = cutPointCrossover(
+                selected,
+                this->config.P_CROSS,
+                num_better_children,
+                num_worse_children
+            );
 
-        //TODO: Calculate Fitness of the children and mutated
+            CubeSols mutated = moveFlipMutation( sols, this->config.P_MUT, 0.15 );
 
-        //TODO: Join the elites to the mutated and children
+            // Join the elites to the mutated and children
+            sols.clear();
+            sols.reserve( elites.size() + mutated.size() + children.size() );
+            sols.insert( sols.end(), elites.begin(), elites.end() );
+            sols.insert( sols.end(), mutated.begin(), mutated.end() );
+            sols.insert( sols.end(), children.begin(), children.end() );
 
-        //TODO: Call logger to save statistics
+            // Call logger to save statistics
+            this->logger.storeStats( sols, num_better_children, num_worse_children );
+        }
     }
 
     TimePoint end_t = getTimeNow();
