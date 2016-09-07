@@ -6,19 +6,19 @@ typedef unsigned int uint;
 
 struct CubeGAConfig
 {
-    /** Number of individuals */
+    /// Number of individuals
     uint NUM_INDIV;
-    /** Number of generations */
+    /// Number of generations
     uint NUM_GENS;
-    /** Crossover probability */
+    /// Crossover probability
     float P_CROSS;
-    /** Mutation probability */
+    /// Mutation probability
     float P_MUT;
-    /** Tournament size */
+    /// Tournament size 
     uint TOURN_SIZE;
-    /** Specifies if it should use elitism */
+    /// Specifies if it should use elitism 
     bool USE_ELIT;
-    /** Configuration name */
+    /// Configuration name
     std::string CONFIG_NAME;
     bool is_loaded;
 

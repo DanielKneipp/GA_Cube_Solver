@@ -41,21 +41,46 @@ private:
     CubeSols moveFlipMutation( CubeSols & sols, float prob_m, float prob_gene );
     // ********************************************************************************
     /// <summary>
-    /// Applies N-cutpoint crossover operator on the individuals.
+    /// It apply N-cutpoint crossover operator on the individuals. It combines the 
+    /// parent genes even if it are composed with CubeSolution::NAM.
     /// </summary>
-    /// <param name="sols"> Individuals (Parents) </param>
-    /// <param name="prob"> Probability of two Individuals be chosen to generate
-    /// two children </param>
-    /// <param name="n_cuts"> Number of cut points </param>
-    /// <returns> Children </returns>
-    /// <remarks> 
+    /// <param name="sols">Individuals (Parents)</param>
+    /// <param name="prob">Probability of two Individuals be chosen to generate
+    /// two children</param>
+    /// <param name="num_better_children">Output parameter that specifies
+    /// the number of children that are better than his parents</param>
+    /// <param name="num_worse_children">Output parameter that specifies
+    /// the number of children that are worse than their parents </param>
+    /// <param name="n_cuts">Number of cut points</param>
+    /// <returns>Children with their fitness calculated</returns>
+    /// <remarks>
     /// The number of parents (<paramref name="sols"/>) must be even
-    /// and should be shuffled because the parents will be choose pairwise 
+    /// and should be shuffled because the parents will be choose pairwise
+    /// sequentially.
     /// </remarks>
     /// <created>Daniel Kneipp,9/6/2016</created>
     /// <changed>Daniel Kneipp,9/6/2016</changed>
     // ********************************************************************************
-    CubeSols cutPointCrossover( CubeSols & sols, float prob, uint n_cuts = 1 );
+    CubeSols cutPointCrossover( 
+        CubeSols & sols, 
+        float prob,
+        uint & num_better_children,
+        uint & num_worse_children,
+        uint n_cuts = 1 
+    );
+    // ********************************************************************************
+    /// <summary>
+    /// Mutated the individual using a set of predefined movements that tends to don't 
+    /// impact critically the individual fitness. It is good to be used on exploitation
+    /// phase.
+    /// </summary>
+    /// <param name="sols"> Individuals </param>
+    /// <param name="prob_m"> Mutation probability </param>
+    /// <returns> Mutated individuals </returns>
+    /// <created>Daniel Kneipp,9/6/2016</created>
+    /// <changed>Daniel Kneipp,9/6/2016</changed>
+    // ********************************************************************************
+    CubeSols smartMovesMutation( CubeSols & sols, float prob_m );
     CubeSols tournament( CubeSols & sols, uint size, uint num_sols_to_select );
     CubeSols getBest( CubeSols & sols, uint num_of_best );
 };

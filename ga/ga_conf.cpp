@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <fstream>
+#include <stdexcept>
 
 CubeGAConfig::CubeGAConfig()
     : is_loaded( false )
@@ -23,6 +24,9 @@ void CubeGAConfig::load( const std::string& file_name )
             {
                 file >> tmpString;
                 this->NUM_INDIV = static_cast< uint >( std::stoul( tmpString ) );
+                if( this->NUM_INDIV % 2 != 0 )
+                    throw std::exception( "Number of individuals has to be even" );
+
                 count++;
             }
             if( tmpString == "NUM_GENS:" )

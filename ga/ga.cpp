@@ -1,6 +1,7 @@
 #include "ga.hpp"
 
 #include <stdexcept>
+#include <algorithm>
 
 #include "utils.hpp"
 
@@ -36,7 +37,84 @@ CubeSols CubeGA::moveFlipMutation( CubeSols & sols, float prob_m, float prob_gen
     return CubeSols();
 }
 
-CubeSols CubeGA::cutPointCrossover( CubeSols & sols, float prob, uint n_cuts )
+CubeSols CubeGA::cutPointCrossover( 
+    CubeSols & sols, 
+    float prob, 
+    uint & num_better_children,
+    uint & num_worse_children,
+    uint n_cuts
+)
+{
+    CubeSols children;
+    children.reserve( sols.size() );
+    uint cutpoint_range_step = ( uint )sols.size() / n_cuts;
+
+    std::vector< std::size_t > cut_points( n_cuts );
+
+    for( std::size_t i = 0; i < sols.size(); i = i + 2 )
+    {
+        float p = genRealRandNumber< float >( 0, 1 );
+
+        if( p < prob )
+        {
+            // Generating the cut points
+            std::size_t j = 0;
+            // The last range has to include the last position
+            for(; j < n_cuts - 1 ; ++j )
+            {
+                cut_points[ j ] = genIntRandNumber< std::size_t >(
+                    j * cutpoint_range_step,
+                    ( j + 1 ) * cutpoint_range_step - 1
+                );
+            }
+            cut_points[ j ] = genIntRandNumber< std::size_t >(
+                j * cutpoint_range_step,
+                ( std::size_t )CubeSolution::NUM_MOVES
+            );
+            std::sort( cut_points.begin(), cut_points.end() );
+            
+            // Do the crossover
+            j = 0;
+            CubeSolution new_children[ 2 ];
+            for( uint k = 0; k < CubeSolution::NUM_MOVES; ++k )
+            {
+
+                if( j < n_cuts && k == cut_points[ j ] )
+                    ++j;
+
+                if( j % 2 == 0 )
+                {
+                    new_children[ 0 ].moves[ k ] = sols[ i ].moves[ k ];
+                    new_children[ 1 ].moves[ k ] = sols[ i + 1 ].moves[ k ];
+                }
+                else
+                {
+                    new_children[ 1 ].moves[ k ] = sols[ i ].moves[ k ];
+                    new_children[ 0 ].moves[ k ] = sols[ i + 1 ].moves[ k ];
+                }
+            }
+            // Calculate the children fitness
+            this->problem.evalSolution( new_children[ 0 ] );
+            this->problem.evalSolution( new_children[ 1 ] );
+
+            // Add children
+            children.push_back( new_children[ 0 ] );
+            children.push_back( new_children[ 1 ] );
+
+            // Get some statistics
+            float paren_mean_fit = ( sols[ i ].fitness + sols[ i + 1 ].fitness ) / 2;
+            // < = better
+            if( new_children[ 0 ].fitness < paren_mean_fit ) num_better_children++; 
+            else num_worse_children++;
+            if( new_children[ 1 ].fitness < paren_mean_fit ) num_better_children++;
+            else num_worse_children++;
+        }
+    }
+    
+    return children;
+}
+
+CubeSols CubeGA::smartMovesMutation( CubeSols & sols, float prob_m )
 {
     return CubeSols();
 }
