@@ -153,8 +153,175 @@ CubeSols CubeGA::cutPointCrossover(
     return children;
 }
 
+struct SmartMoves
+{
+    const enum TYPES
+    {
+        /// Two edge flip cw (clockwise)
+        T_E_F_CW,
+        /// Two edge flip ccw (counterclockwise)
+        T_E_F_CCW,
+        /// Two corner flip cw
+        T_C_F_CW,
+        /// Two corner flip ccw
+        T_C_F_CCW,
+        /// Two edge swap cw
+        T_E_S_CW,
+        /// Two edge swap ccw
+        T_E_S_CCW,
+        /// Two edge/corner swap cw
+        T_EC_S_CW,
+        /// Two edge/corner swap ccw
+        T_EC_S_CCW,
+        /// Three corner swap cw
+        T_C_S_CW,
+        /// Three corner swap ccw
+        T_C_S_CCW,
+        /// Three inslice edge swap cw
+        T_I_E_S_CW,
+        /// Three inslice edge swap ccw
+        T_I_E_S_CCW
+    };
+
+    static const uint NUM_MOVE_TYPES = 12;
+
+    static std::vector< uint > getMoves( TYPES type )
+    {
+        switch( type )
+        {
+        /// [F R B L U L' U B' R' F' L' U' L U']
+        case SmartMoves::T_E_F_CW:
+            return{ 0, 5, 1, 4, 2, 10, 2, 7, 11, 6, 10, 8, 4, 8 };
+
+        /// [F' L' B' R' U' R U' B L F R U R' U]
+        case SmartMoves::T_E_F_CCW:
+            return{ 6, 10, 7, 11, 8, 5, 8, 1, 4, 0, 5, 2, 11, 2 };
+
+        /// [L D' L' F' D' F U F' D F L D L' U'] only works on level 0
+        case SmartMoves::T_C_F_CW:
+            return{ 4, 9, 10, 6, 9, 0, 2, 6, 3, 0, 4, 3, 10, 8 };
+
+        /// [R' D R F D F' U' F D' F' R' D' R U] only works on level 0
+        case SmartMoves::T_C_F_CCW:
+            return{ 11, 3, 5, 0, 3, 6, 8, 0, 9, 6, 11, 9, 5, 2 };
+
+            /// [U F2 U' R' D' L' F2 L D R]
+        case SmartMoves::T_E_S_CW:
+            return{ 2, 12, 8, 11, 9, 10, 12, 4, 3, 5 };
+
+            /// [U' F2 U L D R F2 R' D' L']
+        case SmartMoves::T_E_S_CCW:
+            return{ 8, 12, 2, 4, 3, 5, 12, 11, 9, 10 };
+
+            /// [R' U R U' R' U F R B' R B R F' R2]
+        case SmartMoves::T_EC_S_CW:
+            return{ 11, 2, 5, 8, 11, 2, 0, 5, 7, 5, 1, 5, 6, 17 };
+
+            /// [L U' L' U L U' F' L' B L' B' L' F L2]
+        case SmartMoves::T_EC_S_CCW:
+            return{ 4, 8, 10, 2, 4, 8, 6, 10, 1, 10, 7, 10, 0, 16 };
+
+            /// [F' U B U' F U B' U'] only works on level 0
+        case SmartMoves::T_C_S_CW: 
+            return{ 6, 2, 1, 8, 0, 2, 7, 8 };
+
+            /// [F U' B' U F' U' B U] only works on level 0
+        case SmartMoves::T_C_S_CCW:
+            return{ 0, 8, 7, 2, 6, 8, 1, 2 };
+
+            /// [R L' U 2 R' L F2]
+        case SmartMoves::T_I_E_S_CW:
+            return{ 5, 10, 2, 11, 4, 12 };
+
+           /// [L' R U2 L R' F2]
+        case SmartMoves::T_I_E_S_CCW:
+            return{ 10, 5, 14, 4, 11, 12 };
+
+        default:
+            return std::vector< uint >();
+        }
+    }
+};
+
 CubeSols CubeGA::smartMovesMutation( CubeSols & sols, float prob_m )
 {
+    uint n_levels = this->problem.cube.size / 2;
+    uint n_moves_total = Move::NUM_MOVE_TYPES * Face::_NUM_CUBE_FACES;
+    for( CubeSolution & sol : sols )
+    {
+        float p = genRealRandNumber< float >( 0, 1 );
+        if( p > prob_m )
+        {
+            sol.moveNAMtoTheEnd();
+
+            // Sort the smart movement
+            SmartMoves::TYPES move_type = ( SmartMoves::TYPES )genIntRandNumber< uint >( 
+                0, SmartMoves::NUM_MOVE_TYPES - 1 );
+            std::vector< uint > moves = SmartMoves::getMoves( move_type );
+
+            // Sort the face to be the front
+            Face::TYPES face = ( Face::TYPES )genIntRandNumber< uint >(
+                0, Face::_NUM_CUBE_FACES - 1 );
+
+            // Sort the level (if the cube size is > 3)
+            uint level = 0;
+            if( this->problem.cube.size > 3 && 
+                move_type != SmartMoves::T_C_F_CW && move_type != SmartMoves::T_C_F_CCW &&
+                move_type != SmartMoves::T_C_S_CW && move_type != SmartMoves::T_C_S_CCW)
+                level = genIntRandNumber< uint >( 0, n_levels - 1 );
+
+            uint move_number_shift = n_moves_total * level;
+
+            // Sort if the movement will be mirrored
+            uint mirrored = genIntRandNumber< uint >( 0, 1 );
+
+            // Change the movement according to the face and level
+            uint gene_idx;
+            if( mirrored )
+                gene_idx = CubeSolution::NUM_MOVES - 1;
+            else
+                gene_idx = ( uint )moves.size() - CubeSolution::NUM_MOVES;
+
+            for( uint & move : moves )
+            {
+                if( face != Face::TYPES::FRONT )
+                {
+                    uint move_face = move % Face::_NUM_CUBE_FACES;
+                    uint move_type = move / Face::_NUM_CUBE_FACES;
+
+                    switch( move_face )
+                    {
+                    case Face::BACK:
+                        move = Face::getBackOf( face );
+                        break;
+                    case Face::UP:
+                        move = Face::getUpOf( face );
+                        break;
+                    case Face::DOWN:
+                        move = Face::getDownOf( face );
+                        break;
+                    case Face::LEFT:
+                        move = Face::getLeftOf( face );
+                        break;
+                    case Face::RIGHT:
+                        move = Face::getRightOf( face );
+                        break;
+                    default:
+                        break;
+                    }
+                    move += move_type * Face::_NUM_CUBE_FACES;
+                }
+                move += move_number_shift;
+
+                // Replace the end of the individual with the mutation
+                sol.moves[ gene_idx ] = move;
+                if( mirrored )
+                    gene_idx--;
+                else
+                    gene_idx++;
+            }
+        }
+    }
 
     return CubeSols();
 }

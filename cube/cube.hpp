@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <stdexcept>
 
 #include "matrix.hpp"
 
@@ -16,6 +17,116 @@ struct Face
         LEFT,
         RIGHT
     };
+
+    static TYPES getRightOf( TYPES face )
+    {
+        switch( face )
+        {
+        case TYPES::FRONT:
+            return TYPES::RIGHT;
+        case TYPES::RIGHT:
+            return TYPES::BACK;
+        case TYPES::BACK:
+            return TYPES::LEFT;
+        case TYPES::LEFT:
+            return TYPES::FRONT;
+        case TYPES::UP:
+            return TYPES::RIGHT;
+        case TYPES::DOWN:
+            return TYPES::RIGHT;
+        default:
+            return face;
+        }
+    }
+
+    static TYPES getLeftOf( TYPES face )
+    {
+        switch( face )
+        {
+        case TYPES::FRONT:
+            return TYPES::LEFT;
+        case TYPES::RIGHT:
+            return TYPES::FRONT;
+        case TYPES::BACK:
+            return TYPES::RIGHT;
+        case TYPES::LEFT:
+            return TYPES::BACK;
+        case TYPES::UP:
+            return TYPES::LEFT;
+        case TYPES::DOWN:
+            return TYPES::LEFT;
+        default:
+            return face;
+        }
+    }
+
+    static TYPES getUpOf( TYPES face )
+    {
+        switch( face )
+        {
+        case TYPES::FRONT:
+            return TYPES::UP;
+        case TYPES::RIGHT:
+            return TYPES::UP;
+        case TYPES::BACK:
+            return TYPES::UP;
+        case TYPES::LEFT:
+            return TYPES::UP;
+        case TYPES::UP:
+            return TYPES::BACK;
+        case TYPES::DOWN:
+            return TYPES::FRONT;
+        default:
+            return face;
+        }
+    }
+
+    static TYPES getDownOf( TYPES face )
+    {
+        switch( face )
+        {
+        case TYPES::FRONT:
+            return TYPES::DOWN;
+        case TYPES::RIGHT:
+            return TYPES::DOWN;
+        case TYPES::BACK:
+            return TYPES::DOWN;
+        case TYPES::LEFT:
+            return TYPES::DOWN;
+        case TYPES::UP:
+            return TYPES::FRONT;
+        case TYPES::DOWN:
+            return TYPES::BACK;
+        default:
+            return face;
+        }
+    }
+
+    static TYPES getFrontOf( TYPES face )
+    {
+        return face;
+    }
+
+    static TYPES getBackOf( TYPES face )
+    {
+        switch( face )
+        {
+        case TYPES::FRONT:
+            return TYPES::BACK;
+        case TYPES::RIGHT:
+            return TYPES::LEFT;
+        case TYPES::BACK:
+            return TYPES::FRONT;
+        case TYPES::LEFT:
+            return TYPES::RIGHT;
+        case TYPES::UP:
+            return TYPES::DOWN;
+        case TYPES::DOWN:
+            return TYPES::UP;
+        default:
+            return face;
+        }
+    }
 };
 
 class Cube
