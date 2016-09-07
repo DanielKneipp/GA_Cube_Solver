@@ -34,7 +34,32 @@ CubeSols CubeGA::genRandSols( )
 
 CubeSols CubeGA::moveFlipMutation( CubeSols & sols, float prob_m, float prob_gene )
 {
-    return CubeSols();
+    CubeSols mutated;
+    mutated.reserve( sols.size() );
+
+    for( CubeSolution & sol : sols )
+    {
+        float p = genRealRandNumber< float >( 0, 1 );
+        if( p < prob_m )
+        {
+            CubeSolution m = sol;
+            bool changed = false;
+            for( uint i = 0; i < CubeSolution::NUM_MOVES; ++i )
+            {
+                p = genRealRandNumber< float >( 0, 1 );
+                if( p < prob_gene )
+                {
+                    int move = genIntRandNumber( 0, Move::NUM_MOVE_TYPES - 1 );
+                    m.moves[ i ] = move;
+                    changed = true;
+                }
+            }
+            if( changed ) this->problem.evalSolution( m );
+            mutated.push_back( m );
+        }
+    }
+
+    return mutated;
 }
 
 CubeSols CubeGA::cutPointCrossover( 

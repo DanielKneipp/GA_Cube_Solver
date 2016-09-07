@@ -34,7 +34,7 @@ private:
     /// <param name="sols"> Individuals (solutions) </param>
     /// <param name="prob_m"> Probability of a individual be chosen </param>
     /// <param name="prob_gene"> Probability of a gene be chosen to be mutated </param>
-    /// <returns> Mutated individuals </returns>
+    /// <returns> Mutated individuals with their fitness evaluated </returns>
     /// <created>Daniel Kneipp,9/6/2016</created>
     /// <changed>Daniel Kneipp,9/6/2016</changed>
     // ********************************************************************************

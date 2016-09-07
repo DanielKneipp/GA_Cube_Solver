@@ -57,7 +57,7 @@ private:
 
 struct Move
 {
-    static const ushort _NUM_MOVE_TYPES = 3;
+    static const ushort NUM_MOVE_TYPES = 3;
     const enum TYPES
     {
         ROT90,
@@ -76,6 +76,6 @@ struct Move
         uint levels = s_aux / 2;
 
         // Each face (which is in a level) has 3 possible moves
-        return Face::_NUM_CUBE_FACES * Move::_NUM_MOVE_TYPES * levels;
+        return Face::_NUM_CUBE_FACES * Move::NUM_MOVE_TYPES * levels;
     }
 };

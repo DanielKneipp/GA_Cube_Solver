@@ -158,12 +158,12 @@ void Cube::makeMove( uint move )
 
     // 0 is the surface
     uint level = ( uint )std::floorf( ( float )( move ) / 
-        ( float )( Face::_NUM_CUBE_FACES * Move::_NUM_MOVE_TYPES ) );
+        ( float )( Face::_NUM_CUBE_FACES * Move::NUM_MOVE_TYPES ) );
 
     // 90 degrees to the right (0), left (1) or 180 degrees (2)
     Move::TYPES move_type = ( Move::TYPES )( ( uint )( std::floorf( ( float )( move ) /
         ( float )( Face::_NUM_CUBE_FACES ) ) ) %
-        Move::_NUM_MOVE_TYPES );
+        Move::NUM_MOVE_TYPES );
 
     // Front (0), back (1), up (2), down (3), left (4), right (5).
     Face::TYPES face = ( Face::TYPES )( move % Face::_NUM_CUBE_FACES );
