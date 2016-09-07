@@ -27,8 +27,8 @@ public:
 private:
     // ********************************************************************************
     /// <summary>
-    /// Generate individuals in a randomly way. Note that the CubeSolution::NAM is
-    /// included in the move range.
+    /// Generate individuals in a randomly way. Note that the 
+    /// <see cref="CubeSolution::NAM"/> is included in the move range.
     /// </summary>
     /// <param name="num_sols">Number of solutions (Population size)</param>
     /// <returns>Generated individuals</returns>
@@ -52,7 +52,7 @@ private:
     // ********************************************************************************
     /// <summary>
     /// It apply N-cutpoint crossover operator on the individuals. It combines the 
-    /// parent genes even if it are composed with CubeSolution::NAM.
+    /// parent genes even if it are composed with <see cref="CubeSolution::NAM"/>.
     /// </summary>
     /// <param name="sols">Individuals (Parents)</param>
     /// <param name="prob">Probability of two Individuals be chosen to generate
@@ -92,5 +92,35 @@ private:
     // ********************************************************************************
     CubeSols smartMovesMutation( CubeSols & sols, float prob_m );
     CubeSols tournament( CubeSols & sols, uint size, uint num_sols_to_select );
+    // ********************************************************************************
+    /// <summary>
+    /// Executes a generation using <see cref="moveFlipMutation"> mutation method.
+    /// </summary>
+    /// <param name="sols">Population</param>
+    /// <param name="num_better_children"></param>
+    /// <param name="num_worse_children"></param>
+    /// <created>Daniel Kneipp,9/7/2016</created>
+    /// <changed>Daniel Kneipp,9/7/2016</changed>
+    // ********************************************************************************
+    void runGenWithFlipMut( 
+        CubeSols & sols, 
+        uint & num_better_children,
+        uint & num_worse_children 
+    );
+    // ********************************************************************************
+    /// <summary>
+    /// Executes a generation using <see cref="smartMovesMutation"> mutation method.
+    /// </summary>
+    /// <param name="sols">Population</param>
+    /// <param name="num_better_children"></param>
+    /// <param name="num_worse_children"></param>
+    /// <created>Daniel Kneipp,9/7/2016</created>
+    /// <changed>Daniel Kneipp,9/7/2016</changed>
+    // ********************************************************************************
+    void runGenWithSmartMut( 
+        CubeSols & sols,
+        uint & num_better_children,
+        uint & num_worse_children 
+    );
 };
 
