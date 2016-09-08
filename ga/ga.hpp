@@ -13,7 +13,7 @@ typedef std::vector< CubeSolution > CubeSols;
 class CubeGA
 {
 public:
-    std::chrono::microseconds executionTime;
+    std::chrono::microseconds execution_time;
     CubeGAConfig config;
     CubeSolution best_sol;
     CubeProblem problem;
@@ -22,7 +22,7 @@ public:
     CubeGA();
     ~CubeGA();
     void run();
-    void setOutputFolder( std::string & path );
+    void setOutputFolder( const std::string & path );
 
 private:
     // ********************************************************************************

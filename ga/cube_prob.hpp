@@ -20,7 +20,7 @@ public:
     ~CubeProblem();
 
     void evalSolution( CubeSolution & sol );
-    void load( std::string & file );
+    void load( const std::string & file );
 
 private:
     kernel_type g_kernel;

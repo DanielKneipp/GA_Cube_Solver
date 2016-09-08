@@ -419,15 +419,18 @@ void CubeGA::run()
     }
 
     TimePoint end_t = getTimeNow();
-    this->executionTime = castMicro( end_t - start_t );
+    this->execution_time = castMicro( end_t - start_t );
 
     this->best_sol = *std::min_element( sols.begin(), sols.end() );
+
+    // Store the best solution
+    this->logger.storeSolution( this->best_sol, "best" );
 
     // Plot the result
     this->logger.plotStoredData();
 }
 
-void CubeGA::setOutputFolder( std::string & path )
+void CubeGA::setOutputFolder( const std::string & path )
 {
     this->logger.setOutputFolder( path );
 }

@@ -10,7 +10,6 @@
 class Logger
 {
 public:
-    
     std::string output_file;
     std::string output_folder_file;
 
@@ -27,6 +26,7 @@ public:
         unsigned num_better_children,
         unsigned num_worse_children
     );
+    void storeSolution( CubeSolution sol, const std::string & name );
     void plotStoredData();
 
 private:

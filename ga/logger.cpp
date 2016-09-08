@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <cstdlib>
+#include <iterator>
 
 #define _GNUPLOT_SCRIPT "plotGAData.gp" 
 
@@ -36,7 +37,8 @@ void Logger::defineOutputFileName(
 {
     this->output_file = prob.instance_name + "_"
         + ga_config.CONFIG_NAME + "_"
-        + getSuffixDateTime();
+        + getSuffixDateTime()
+        + ".log";
 
     this->output_folder_file = this->output_folder + this->output_file;
 }
@@ -66,7 +68,7 @@ void Logger::writeHeader()
 {
     std::ofstream out_file = openOutFile( this->output_folder_file );
 
-    out_file << "Max Min Mean Clones Better_Children Worse_Children\n";
+    out_file << "Max Min Mean Stddev Clones Better_Children Worse_Children\n";
 
     out_file.close();
 }
@@ -77,7 +79,7 @@ void Logger::storeStats(
     unsigned num_worse_children
 )
 {
-    // Get the best, worst, mean and number of clones
+    // Get the best, worst, mean, stddev and number of clones
     std::vector< CubeSolution > sorted_sols = sols;
     std::sort( sorted_sols.begin(), sorted_sols.end() );
 
@@ -100,7 +102,15 @@ void Logger::storeStats(
         old_f = f;
     }
 
-    float mean = acc / ( float )sols.size();    
+    float mean = acc / ( float )sols.size();   
+
+    float accum = 0.0;
+    std::for_each( std::begin( sols ), std::end( sols ), [ & ]( const CubeSolution & s )
+    {
+        accum += ( s.fitness - mean ) * ( s.fitness - mean );
+    } );
+
+    float stddev = sqrt( accum / ( sols.size() - 1 ) );
 
     // Write to the output file
     std::ofstream out_file = openOutFile( this->output_folder_file );
@@ -108,9 +118,19 @@ void Logger::storeStats(
     out_file << mean << " " 
         << max << " " 
         << min << " " 
+        << stddev << " "
         << num_clones << " " 
         << num_better_children << " " 
         << num_worse_children << "\n";
+
+    out_file.close();
+}
+
+void Logger::storeSolution( CubeSolution sol, const std::string & name )
+{
+    std::ofstream out_file = openOutFile( this->output_folder_file + ".cubesols" );
+
+    out_file << name << ": " << sol.toString();
 
     out_file.close();
 }

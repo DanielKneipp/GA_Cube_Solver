@@ -54,6 +54,15 @@ bool CubeSolution::operator==( const CubeSolution & other ) const
     return this->fitness == other.fitness;
 }
 
+std::string CubeSolution::toString() const
+{
+    std::string str( std::to_string( this->fitness ) );
+    for( unsigned i = 0; i < CubeSolution::NUM_MOVES; ++i )
+        str += std::to_string( this->moves[ i ] ) + " ";
+
+    return str;
+}
+
 void CubeSolution::moveNAMtoTheEnd()
 {
     bool after_NAM = false;

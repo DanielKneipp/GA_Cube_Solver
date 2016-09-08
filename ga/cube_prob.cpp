@@ -4,7 +4,8 @@
 
 inline float gaussian( float x, float mu, float sigma )
 {
-    return std::exp( -( ( ( x - mu ) / ( sigma ) )*( ( x - mu ) / ( sigma ) ) ) / 2.0 );
+    return ( float )std::exp( -( ( ( x - mu ) / ( sigma ) ) *
+        ( ( x - mu ) / ( sigma ) ) ) / 2.0 );
 }
 
 CubeProblem::CubeProblem()
@@ -22,7 +23,7 @@ void CubeProblem::evalSolution( CubeSolution & sol )
         if( move != CubeSolution::NAM )
             c_tmp.makeMove( ( uint )move );
 
-    // If the cube hasn't a size of even number (It has a center sqaure)
+    // If the cube hasn't a size of even number (It has a center square)
     if( this->cube.size % 2 != 0 )
     {
         for( uint i = 0; i < Face::_NUM_CUBE_FACES; ++i )
@@ -98,7 +99,7 @@ void CubeProblem::evalSolution( CubeSolution & sol )
     }
 }
 
-void CubeProblem::load( std::string & file )
+void CubeProblem::load( const std::string & file )
 {
     this->cube.readFromFile( file );
     this->is_loaded = true;
@@ -108,14 +109,14 @@ void CubeProblem::load( std::string & file )
 
 void CubeProblem::genModifiedGaussianKernel( unsigned kernelRadius )
 {
-    float sigma = kernelRadius / 2.;
+    float sigma = kernelRadius / 2.f;
     this->g_kernel = kernel_type( 2 * kernelRadius + 1, kernel_row( 2 * kernelRadius + 1 ) );
     for( std::size_t row = 0; row < this->g_kernel.size(); ++row )
     {
         for( std::size_t col = 0; col < this->g_kernel[ row ].size(); ++col )
         {
-            float x = gaussian( row, kernelRadius, sigma )
-                * gaussian( col, kernelRadius, sigma );
+            float x = gaussian( ( float )row, ( float )kernelRadius, sigma )
+                * gaussian( ( float )col, ( float )kernelRadius, sigma );
             this->g_kernel[ row ][ col ] = std::abs( x - 1.f ) * ( kernelRadius + 1 );
             this->g_kernel[ row ][ col ] *= this->g_kernel[ row ][ col ];
         }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class CubeSolution
 {
 public:
@@ -20,6 +22,7 @@ public:
     bool operator > ( const CubeSolution & other ) const;
     bool operator >= ( const CubeSolution & other ) const;
     bool operator == ( const CubeSolution & other ) const;
+    std::string toString() const;
 
     void moveNAMtoTheEnd();
 };
