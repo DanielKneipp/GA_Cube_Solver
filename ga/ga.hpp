@@ -92,35 +92,5 @@ private:
     // ********************************************************************************
     CubeSols smartMovesMutation( CubeSols & sols, float prob_m );
     CubeSols tournament( CubeSols & sols, uint size, uint num_sols_to_select );
-    // ********************************************************************************
-    /// <summary>
-    /// Executes a generation using <see cref="moveFlipMutation"> mutation method.
-    /// </summary>
-    /// <param name="sols">Population</param>
-    /// <param name="num_better_children"></param>
-    /// <param name="num_worse_children"></param>
-    /// <created>Daniel Kneipp,9/7/2016</created>
-    /// <changed>Daniel Kneipp,9/7/2016</changed>
-    // ********************************************************************************
-    void runGenWithFlipMut( 
-        CubeSols & sols, 
-        uint & num_better_children,
-        uint & num_worse_children 
-    );
-    // ********************************************************************************
-    /// <summary>
-    /// Executes a generation using <see cref="smartMovesMutation"> mutation method.
-    /// </summary>
-    /// <param name="sols">Population</param>
-    /// <param name="num_better_children"></param>
-    /// <param name="num_worse_children"></param>
-    /// <created>Daniel Kneipp,9/7/2016</created>
-    /// <changed>Daniel Kneipp,9/7/2016</changed>
-    // ********************************************************************************
-    void runGenWithSmartMut( 
-        CubeSols & sols,
-        uint & num_better_children,
-        uint & num_worse_children 
-    );
 };
 

@@ -43,7 +43,7 @@ void CubeProblem::evalSolution( CubeSolution & sol )
             char face_colors[ 4 ];
             face_colors[ 0 ] = c_tmp.cube[ i ].m[ c_tmp.size / 2 ][ c_tmp.size / 2 ];
             face_colors[ 1 ] = c_tmp.cube[ i ].m[ c_tmp.size / 2 ][ c_tmp.size / 2 + 1 ];
-            face_colors[ 2 ] = c_tmp.cube[ i ].m[ c_tmp.size / 2 ][ c_tmp.size / 2 ];
+            face_colors[ 2 ] = c_tmp.cube[ i ].m[ c_tmp.size / 2 + 1 ][ c_tmp.size / 2 ];
             face_colors[ 3 ] = c_tmp.cube[ i ].m[ c_tmp.size / 2 + 1 ][ c_tmp.size / 2 + 1 ];
             uint counter[ 4 ] = { 0, 0, 0, 0 };
             for( uint j = 0; j < 4; ++j )
@@ -89,7 +89,7 @@ void CubeProblem::evalSolution( CubeSolution & sol )
                             sol.fitness += this->g_kernel[ j ][ k ];
             }
             else // Penalizes everyone
-            {               
+            {
                 for( uint j = 0; j < c_tmp.size; ++j )
                     for( uint k = 0; k < c_tmp.size; ++k )
                         sol.fitness += this->g_kernel[ j ][ k ];
