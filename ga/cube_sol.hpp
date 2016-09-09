@@ -14,15 +14,18 @@ public:
 
     CubeSolution();
     CubeSolution( const CubeSolution & other );
+    CubeSolution( CubeSolution && other );
     ~CubeSolution();
 
     CubeSolution & operator = ( const CubeSolution & other );
+    CubeSolution & operator = ( CubeSolution && other );
     bool operator < ( const CubeSolution & other ) const;
     bool operator <= ( const CubeSolution & other ) const;
     bool operator > ( const CubeSolution & other ) const;
     bool operator >= ( const CubeSolution & other ) const;
     bool operator == ( const CubeSolution & other ) const;
     std::string toString() const;
+    std::string toString( unsigned cube_num_moves ) const;
 
     void moveNAMtoTheEnd();
 };

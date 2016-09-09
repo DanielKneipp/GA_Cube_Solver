@@ -10,7 +10,8 @@
 #include <cstdlib>
 #include <iterator>
 
-#define _GNUPLOT_SCRIPT "plotGAData.gp" 
+#define _GNUPLOT_SCRIPT_FIT "plot_fit_data.gp" 
+#define _GNUPLOT_SCRIPT_IND "plot_ind_data.gp"
 
 std::string getSuffixDateTime()
 {
@@ -68,7 +69,7 @@ void Logger::writeHeader()
 {
     std::ofstream out_file = openOutFile( this->output_folder_file );
 
-    out_file << "Max Min Mean Stddev Clones Better_Children Worse_Children\n";
+    out_file << "Max Min Mean Stddev Clones Num_Better_Children Num_Worse_Children\n";
 
     out_file.close();
 }
@@ -115,9 +116,9 @@ void Logger::storeStats(
     // Write to the output file
     std::ofstream out_file = openOutFile( this->output_folder_file );
 
-    out_file << mean << " " 
-        << max << " " 
+    out_file << max << " " 
         << min << " " 
+        << mean << " " 
         << stddev << " "
         << num_clones << " " 
         << num_better_children << " " 
@@ -126,11 +127,18 @@ void Logger::storeStats(
     out_file.close();
 }
 
-void Logger::storeSolution( CubeSolution sol, const std::string & name )
+void Logger::storeSolution( 
+    CubeSolution sol, 
+    const std::string & name,
+    uint cube_num_sols
+)
 {
     std::ofstream out_file = openOutFile( this->output_folder_file + ".cubesols" );
 
-    out_file << name << ": " << sol.toString();
+    if( cube_num_sols == 0 )
+        out_file << name << ": " << sol.toString();
+    else // Translate the offset and print smart moves entirely and not its id
+        out_file << name << ": " << sol.toString( cube_num_sols ); 
 
     out_file.close();
 }
@@ -143,7 +151,14 @@ void Logger::plotStoredData()
     std::string command;
     command = "gnuplot -e \"";
     command += std::string( "filename='" ) + this->output_folder_file + "'\" ";
-    command += _GNUPLOT_SCRIPT;
+    command += _GNUPLOT_SCRIPT_FIT;
+
+    std::system( command.c_str() );
+
+    command = "";
+    command = "gnuplot -e \"";
+    command += std::string( "filename='" ) + this->output_folder_file + "'\" ";
+    command += _GNUPLOT_SCRIPT_IND;
 
     std::system( command.c_str() );
 }

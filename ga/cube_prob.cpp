@@ -14,14 +14,30 @@ CubeProblem::CubeProblem()
 CubeProblem::~CubeProblem()
 {}
 
-void CubeProblem::evalSolution( CubeSolution & sol )
+Cube CubeProblem::evalSolution( CubeSolution & sol )
 {
     Cube c_tmp = this->cube;
     sol.fitness = 0;
 
     for( int & move : sol.moves )
+    {
         if( move != CubeSolution::NAM )
-            c_tmp.makeMove( ( uint )move );
+        {
+            // if the move is a smart move
+            if( move >= ( int )this->cube.num_moves )
+            {
+                // Remove the offset 
+                uint s_m_idx = move - this->cube.num_moves;
+                std::vector< uint > smart_moves = SmartMoves::getMove( s_m_idx );
+                for( uint & s_m : smart_moves )
+                    c_tmp.makeMove( s_m );
+            }
+            else
+            {
+                c_tmp.makeMove( ( uint )move );
+            }
+        }
+    }
 
     // If the cube hasn't a size of even number (It has a center square)
     if( this->cube.size % 2 != 0 )
@@ -97,12 +113,16 @@ void CubeProblem::evalSolution( CubeSolution & sol )
             }
         }
     }
+
+    return c_tmp;
 }
 
 void CubeProblem::load( const std::string & file )
 {
     this->cube.readFromFile( file );
     this->is_loaded = true;
+
+    this->instance_name = file;
 
     this->genModifiedGaussianKernel( this->cube.size / 2 );
 }

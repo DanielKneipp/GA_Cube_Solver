@@ -26,7 +26,11 @@ public:
         unsigned num_better_children,
         unsigned num_worse_children
     );
-    void storeSolution( CubeSolution sol, const std::string & name );
+    void storeSolution( 
+        CubeSolution sol, 
+        const std::string & name,
+        uint cube_num_moves = 0
+    );
     void plotStoredData();
 
 private:

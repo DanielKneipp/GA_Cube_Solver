@@ -1,5 +1,9 @@
 #include "cube_sol.hpp"
 
+#include <vector>
+
+#include "cube/cube.hpp"
+
 CubeSolution::CubeSolution()
 {
     for( int i = 0; i < CubeSolution::NUM_MOVES; ++i )
@@ -9,6 +13,14 @@ CubeSolution::CubeSolution()
 }
 
 CubeSolution::CubeSolution( const CubeSolution & other )
+{
+    for( int i = 0; i < CubeSolution::NUM_MOVES; ++i )
+        this->moves[ i ] = other.moves[ i ];
+
+    this->fitness = other.fitness;
+}
+
+CubeSolution::CubeSolution( CubeSolution && other )
 {
     for( int i = 0; i < CubeSolution::NUM_MOVES; ++i )
         this->moves[ i ] = other.moves[ i ];
@@ -26,6 +38,15 @@ CubeSolution & CubeSolution::operator=( const CubeSolution & other )
 
     this->fitness = other.fitness;
 
+    return *this;
+}
+
+CubeSolution & CubeSolution::operator=( CubeSolution && other )
+{
+    for( int i = 0; i < CubeSolution::NUM_MOVES; ++i )
+        this->moves[ i ] = other.moves[ i ];
+
+    this->fitness = other.fitness;
     return *this;
 }
 
@@ -63,6 +84,27 @@ std::string CubeSolution::toString() const
     return str;
 }
 
+std::string CubeSolution::toString( unsigned cube_num_moves ) const
+{
+    std::string str( std::to_string( this->fitness ) );
+    for( unsigned i = 0; i < CubeSolution::NUM_MOVES; ++i )
+    {
+        if( this->moves[ i ] > ( int )cube_num_moves )
+        {
+            unsigned s_m_idx = this->moves[ i ] - cube_num_moves;
+            std::vector< uint > smart_moves = SmartMoves::getMove( s_m_idx );
+            for( uint & s_m : smart_moves )
+                str += std::to_string( s_m ) + " ";
+        }
+        else
+        {
+            str += std::to_string( this->moves[ i ] ) + " ";
+        }
+    }
+
+    return str;
+}
+
 void CubeSolution::moveNAMtoTheEnd()
 {
     bool after_NAM = false;
@@ -74,15 +116,13 @@ void CubeSolution::moveNAMtoTheEnd()
             {
                 this->moves[ j ] = this->moves[ i ];
                 this->moves[ i ] = CubeSolution::NAM;
-                after_NAM = false;
-                j = i;
             }
-
             ++j;
         }
         else
         {
-            after_NAM = true;
+            if( !after_NAM )
+                after_NAM = true;
         }
     }
 }

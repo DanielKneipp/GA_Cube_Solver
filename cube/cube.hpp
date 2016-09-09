@@ -2,6 +2,8 @@
 
 #include <string>
 #include <stdexcept>
+#include <vector>
+#include <algorithm>
 
 #include "matrix.hpp"
 
@@ -188,5 +190,165 @@ struct Move
 
         // Each face (which is in a level) has 3 possible moves
         return Face::_NUM_CUBE_FACES * Move::NUM_MOVE_TYPES * levels;
+    }
+};
+
+struct SmartMoves
+{
+    const enum TYPES
+    {
+        /// Two edge flip cw (clockwise)
+        T_E_F_CW,
+        /// Two edge flip ccw (counterclockwise)
+        T_E_F_CCW,
+        /// Two corner flip cw
+        T_C_F_CW,
+        /// Two corner flip ccw
+        T_C_F_CCW,
+        /// Two edge swap cw
+        T_E_S_CW,
+        /// Two edge swap ccw
+        T_E_S_CCW,
+        /// Two edge/corner swap cw
+        T_EC_S_CW,
+        /// Two edge/corner swap ccw
+        T_EC_S_CCW,
+        /// Three corner swap cw
+        T_C_S_CW,
+        /// Three corner swap ccw
+        T_C_S_CCW,
+        /// Three inslice edge swap cw
+        T_I_E_S_CW,
+        /// Three inslice edge swap ccw
+        T_I_E_S_CCW
+    };
+
+    static const uint NUM_MOVE_TYPES = 12;
+    /// Mirroring operation makes the move space twice bigger.
+    static const uint MIRROR_OP = 2;
+    /// 12 (number of default smart moves) * 2 (mirroring) 
+    /// * 6 (number of faces that could be the front)
+    static const uint NUM_MOVES_PER_LEVEL = 144;
+
+    static std::vector< uint > getDefaultMove( TYPES type )
+    {
+        switch( type )
+        {
+            /// [F R B L U L' U B' R' F' L' U' L U']
+        case SmartMoves::T_E_F_CW:
+            return{ 0, 5, 1, 4, 2, 10, 2, 7, 11, 6, 10, 8, 4, 8 };
+
+            /// [F' L' B' R' U' R U' B L F R U R' U]
+        case SmartMoves::T_E_F_CCW:
+            return{ 6, 10, 7, 11, 8, 5, 8, 1, 4, 0, 5, 2, 11, 2 };
+
+            /// [L D' L' F' D' F U F' D F L D L' U'] only works on level 0
+        case SmartMoves::T_C_F_CW:
+            return{ 4, 9, 10, 6, 9, 0, 2, 6, 3, 0, 4, 3, 10, 8 };
+
+            /// [R' D R F D F' U' F D' F' R' D' R U] only works on level 0
+        case SmartMoves::T_C_F_CCW:
+            return{ 11, 3, 5, 0, 3, 6, 8, 0, 9, 6, 11, 9, 5, 2 };
+
+            /// [U F2 U' R' D' L' F2 L D R]
+        case SmartMoves::T_E_S_CW:
+            return{ 2, 12, 8, 11, 9, 10, 12, 4, 3, 5 };
+
+            /// [U' F2 U L D R F2 R' D' L']
+        case SmartMoves::T_E_S_CCW:
+            return{ 8, 12, 2, 4, 3, 5, 12, 11, 9, 10 };
+
+            /// [R' U R U' R' U F R B' R B R F' R2]
+        case SmartMoves::T_EC_S_CW:
+            return{ 11, 2, 5, 8, 11, 2, 0, 5, 7, 5, 1, 5, 6, 17 };
+
+            /// [L U' L' U L U' F' L' B L' B' L' F L2]
+        case SmartMoves::T_EC_S_CCW:
+            return{ 4, 8, 10, 2, 4, 8, 6, 10, 1, 10, 7, 10, 0, 16 };
+
+            /// [F' U B U' F U B' U'] only works on level 0
+        case SmartMoves::T_C_S_CW:
+            return{ 6, 2, 1, 8, 0, 2, 7, 8 };
+
+            /// [F U' B' U F' U' B U] only works on level 0
+        case SmartMoves::T_C_S_CCW:
+            return{ 0, 8, 7, 2, 6, 8, 1, 2 };
+
+            /// [R L' U2 R' L F2]
+        case SmartMoves::T_I_E_S_CW:
+            return{ 5, 10, 2, 11, 4, 12 };
+
+            /// [L' R U2 L R' F2]
+        case SmartMoves::T_I_E_S_CCW:
+            return{ 10, 5, 14, 4, 11, 12 };
+
+        default:
+            return std::vector< uint >();
+        }
+    }
+
+    static uint getNumSmartMoves( uint cube_size )
+    {
+        uint n_levels = cube_size / 2;
+        return SmartMoves::NUM_MOVES_PER_LEVEL * n_levels;
+    }
+
+    static std::vector< uint > getMove( uint m )
+    {
+        uint mirrored = m % SmartMoves::MIRROR_OP;
+        uint move_type = ( m / SmartMoves::MIRROR_OP ) % SmartMoves::NUM_MOVE_TYPES;
+        uint face = ( m / SmartMoves::MIRROR_OP / SmartMoves::NUM_MOVE_TYPES ) % Face::_NUM_CUBE_FACES;
+        uint level = 0;
+
+        // This movements don't make any difference on the individual genotype if the level > 0
+        if( move_type != SmartMoves::T_C_F_CW && move_type != SmartMoves::T_C_F_CCW &&
+            move_type != SmartMoves::T_C_S_CW && move_type != SmartMoves::T_C_S_CCW )
+        {
+            level = m / ( SmartMoves::NUM_MOVE_TYPES * SmartMoves::MIRROR_OP * Face::_NUM_CUBE_FACES );
+        }
+
+        std::vector< uint > moves = SmartMoves::getDefaultMove( ( SmartMoves::TYPES )move_type );
+
+        uint move_level_shift = SmartMoves::NUM_MOVES_PER_LEVEL * level;
+
+        for( uint & move : moves )
+        {
+            if( face != Face::TYPES::FRONT )
+            {
+                uint move_face = move % Face::_NUM_CUBE_FACES;
+                uint move_type = move / Face::_NUM_CUBE_FACES;
+
+                switch( move_face )
+                {
+                case Face::FRONT:
+                    move = Face::getFrontOf( ( Face::TYPES )face );
+                    break;
+                case Face::BACK:
+                    move = Face::getBackOf( ( Face::TYPES )face );
+                    break;
+                case Face::UP:
+                    move = Face::getUpOf( ( Face::TYPES )face );
+                    break;
+                case Face::DOWN:
+                    move = Face::getDownOf( ( Face::TYPES )face );
+                    break;
+                case Face::LEFT:
+                    move = Face::getLeftOf( ( Face::TYPES )face );
+                    break;
+                case Face::RIGHT:
+                    move = Face::getRightOf( ( Face::TYPES )face );
+                    break;
+                default:
+                    break;
+                }
+                move += move_type * Face::_NUM_CUBE_FACES;
+            }
+            move += move_level_shift;
+        }
+
+        if( mirrored == 1 )
+            std::reverse( moves.begin(), moves.end() );
+
+        return moves;
     }
 };

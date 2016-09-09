@@ -19,7 +19,7 @@ public:
     CubeProblem();
     ~CubeProblem();
 
-    void evalSolution( CubeSolution & sol );
+    Cube evalSolution( CubeSolution & sol );
     void load( const std::string & file );
 
 private:

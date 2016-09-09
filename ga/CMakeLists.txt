@@ -23,7 +23,8 @@ target_link_libraries(cube_ga_solver ${CUBE_LIB})
 set_property(TARGET cube_ga_solver PROPERTY PROJECT_LABEL "ga")
 
 install(TARGETS cube_ga_solver DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(FILES plotGAData.gp DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(FILES plot_fit_data.gp DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(FILES plot_ind_data.gp DESTINATION ${CMAKE_INSTALL_PREFIX})
 
 option(USE_STATIC_SEED "Use static seed for random number generator." OFF)
 

@@ -65,6 +65,30 @@ void CubeGAConfig::load( const std::string& file_name )
                 this->NUM_ELITES = static_cast< uint >( std::stoi( tmpString ) );
                 count++;
             }
+            if( tmpString == "N_CUT_POINTS:" )
+            {
+                file >> tmpString;
+                this->N_CUT_POINTS = static_cast< uint >( std::stoi( tmpString ) );
+                count++;
+            }
+            if( tmpString == "FLIP_MUT_GEN_PROB:" )
+            {
+                file >> tmpString;
+                this->FLIP_MUT_GEN_PROB = static_cast< float >( std::stof( tmpString ) );
+                count++;
+            }
+            if( tmpString == "NUM_GENS_WITH_FLIP:" )
+            {
+                file >> tmpString;
+                this->NUM_GENS_WITH_FLIP = static_cast< uint >( std::stoi( tmpString ) );
+                count++;
+            }
+            if( tmpString == "INIT_POP_PROB_GENE_BE_NAM:" )
+            {
+                file >> tmpString;
+                this->INIT_POP_PROB_GENE_BE_NAM = static_cast< float >( std::stof( tmpString ) );
+                count++;
+            }
             else if( tmpString == "CONFIG_NAME:" )
             {
                 file >> tmpString;
@@ -75,7 +99,7 @@ void CubeGAConfig::load( const std::string& file_name )
             file >> tmpString;
         }
     }
-    if( count < 7 )
+    if( count < 12 )
     {
         throw std::invalid_argument( std::string( "The configuration file " ) + file_name +
             " does not have enough parameters to fill CubeGAConfig" );
@@ -93,5 +117,9 @@ std::string CubeGAConfig::toString() const
         + std::string( "TOURN_SIZE: " ) + std::to_string( this->TOURN_SIZE ) + "\n"
         + std::string( "USE_ELIT: " ) + std::to_string( this->USE_ELIT ) + "\n"
         + std::string( "NUM_ELITES: " ) + std::to_string( this->NUM_ELITES ) + "\n"
+        + std::string( "N_CUT_POINTS: " ) + std::to_string( this->N_CUT_POINTS ) + "\n"
+        + std::string( "FLIP_MUT_GEN_PROB: " ) + std::to_string( this->FLIP_MUT_GEN_PROB ) + "\n"
+        + std::string( "NUM_GENS_WITH_FLIP: " ) + std::to_string( this->NUM_GENS_WITH_FLIP ) + "\n"
+        + std::string( "INIT_POP_PROB_GENE_BE_NAM: " ) + std::to_string( this->INIT_POP_PROB_GENE_BE_NAM ) + "\n"
         + std::string( "CONFIG_NAME: " ) + this->CONFIG_NAME;
 }

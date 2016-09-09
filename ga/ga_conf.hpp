@@ -20,6 +20,16 @@ struct CubeGAConfig
     bool USE_ELIT;
     /// Number of elites
     uint NUM_ELITES;
+    /// Number of cut points
+    uint N_CUT_POINTS;
+    /// Probability of the genes being mutated by the flip operator
+    float FLIP_MUT_GEN_PROB;
+    /// After this number of generations, smart moves 
+    /// will be used as mutation operator
+    uint NUM_GENS_WITH_FLIP;
+    /// Specifies the probability of a gene be <see cref="CubeSolution::NAM"/>
+    /// on the initial population
+    float INIT_POP_PROB_GENE_BE_NAM;
     /// Configuration name
     std::string CONFIG_NAME;
     bool is_loaded;
