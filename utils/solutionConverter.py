@@ -5,6 +5,10 @@ def to_text( sol ):
     for number in sol.split(' '):
         m = ''
         n = int(number)
+
+        if n == -1:
+            continue
+
         level = n // 18
         move_type = (n // 6) % 3
         face = n % 6
