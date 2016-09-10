@@ -122,7 +122,7 @@ void CubeProblem::load( const std::string & file )
     this->cube.readFromFile( file );
     this->is_loaded = true;
 
-    this->instance_name = file;
+    this->instance_name = file.substr( file.find_last_of( "/\\" ) + 1 );
 
     this->genModifiedGaussianKernel( this->cube.size / 2 );
 }
