@@ -5,7 +5,7 @@
 
 #include "utils.hpp"
 
-#define _MUT_NAM_TO_END_PROB 1.f
+//#define _MUT_NAM_TO_END_PROB 1.f
 
 #define castMicro( t ) std::chrono::duration_cast< std::chrono::microseconds >( t )
 #define getTimeNow() std::chrono::steady_clock::now()
@@ -178,7 +178,7 @@ CubeSols CubeGA::smartMovesMutation( CubeSols & sols, float prob_m )
         {
             CubeSolution mutant = sol;
             float p_NAM = genRealRandNumber< float >( 0, 1 );
-            if( p_NAM < _MUT_NAM_TO_END_PROB )
+            if( p_NAM < this->config.MUT_NAM_TO_END_PROB )
             {
                 mutant.moveNAMtoTheEnd();
 

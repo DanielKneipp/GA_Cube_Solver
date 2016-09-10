@@ -30,6 +30,9 @@ struct CubeGAConfig
     /// Specifies the probability of a gene be <see cref="CubeSolution::NAM"/>
     /// on the initial population
     float INIT_POP_PROB_GENE_BE_NAM;
+    /// Probability of the smart mutation put the move sequence 
+    /// on the end of the chromosome 
+    float MUT_NAM_TO_END_PROB;
     /// Configuration name
     std::string CONFIG_NAME;
     bool is_loaded;

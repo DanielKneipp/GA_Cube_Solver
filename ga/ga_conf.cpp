@@ -91,6 +91,12 @@ void CubeGAConfig::load( const std::string& file_name )
                 this->INIT_POP_PROB_GENE_BE_NAM = static_cast< float >( std::stof( tmpString ) );
                 count++;
             }
+            if( tmpString == "MUT_NAM_TO_END_PROB:" )
+            {
+                file >> tmpString;
+                this->MUT_NAM_TO_END_PROB = static_cast< float >( std::stof( tmpString ) );
+                count++;
+            }
             else if( tmpString == "CONFIG_NAME:" )
             {
                 file >> tmpString;
@@ -101,7 +107,7 @@ void CubeGAConfig::load( const std::string& file_name )
             file >> tmpString;
         }
     }
-    if( count < 12 )
+    if( count < 13 )
     {
         throw std::invalid_argument( std::string( "The configuration file " ) + file_name +
             " does not have enough parameters to fill CubeGAConfig" );
@@ -123,5 +129,6 @@ std::string CubeGAConfig::toString() const
         + std::string( "FLIP_MUT_GEN_PROB: " ) + std::to_string( this->FLIP_MUT_GEN_PROB ) + "\n"
         + std::string( "NUM_GENS_WITH_FLIP: " ) + std::to_string( this->NUM_GENS_WITH_FLIP ) + "\n"
         + std::string( "INIT_POP_PROB_GENE_BE_NAM: " ) + std::to_string( this->INIT_POP_PROB_GENE_BE_NAM ) + "\n"
+        + std::string( "MUT_NAM_TO_END_PROB: " ) + std::to_string( this->MUT_NAM_TO_END_PROB ) + "\n"
         + std::string( "CONFIG_NAME: " ) + this->CONFIG_NAME;
 }
