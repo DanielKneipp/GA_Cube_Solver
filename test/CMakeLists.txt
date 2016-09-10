@@ -10,13 +10,13 @@ set(TEST_SRCS
     "array2d.cpp"
 )
 
-set(TEST_ASSETS
-    "in_test_3_1"
-    "in_test_4_1"
-)
+file(GLOB INSTANCES "instances/in*")
+
+file(GLOB CONFIG_FILES "configs/*.conf")
 
 add_executable(test_all "test_all.cpp" ${TEST_SRCS})
 target_link_libraries(test_all ${GTEST_BOTH_LIBRARIES} ${CUBE_LIB})
 set_property(TARGET test_all PROPERTY PROJECT_LABEL "test")
 
-file(COPY ${TEST_ASSETS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+install(FILES ${INSTANCES} DESTINATION ${CMAKE_INSTALL_PREFIX}/instances)
+install(FILES ${CONFIG_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/configs)
