@@ -5,6 +5,8 @@
 
 #include "utils.hpp"
 
+#define _MUT_NAM_TO_END_PROB 1.f
+
 #define castMicro( t ) std::chrono::duration_cast< std::chrono::microseconds >( t )
 #define getTimeNow() std::chrono::steady_clock::now()
 
@@ -175,20 +177,36 @@ CubeSols CubeGA::smartMovesMutation( CubeSols & sols, float prob_m )
         if( p > prob_m )
         {
             CubeSolution mutant = sol;
+            float p_NAM = genRealRandNumber< float >( 0, 1 );
+            if( p_NAM < _MUT_NAM_TO_END_PROB )
+            {
+                mutant.moveNAMtoTheEnd();
 
-            mutant.moveNAMtoTheEnd();
+                // Sort the smart movement
+                uint move = genIntRandNumber< uint >(
+                    0, total_num_smart_moves - 1 );
 
-            // Sort the smart movement
-            uint move = genIntRandNumber< uint >(
-                0, total_num_smart_moves - 1 );
+                // Adds the offset of normal movements
+                move += this->problem.cube.num_moves;
 
-            // Adds the offset of normal movements
-            move += this->problem.cube.num_moves;
+                mutant.moves[ CubeSolution::NUM_MOVES - 1 ] = move;
+            }
+            else
+            {
+                mutant.moveNAMtoTheBeginning();
 
-            mutant.moves[ CubeSolution::NUM_MOVES - 1 ] = move;
+                // Sort the smart movement
+                uint move = genIntRandNumber< uint >(
+                    0, total_num_smart_moves - 1 );
+
+                // Adds the offset of normal movements
+                move += this->problem.cube.num_moves;
+
+                mutant.moves[ 0 ] = move;
+            }            
 
             this->problem.evalSolution( mutant );
-
+            mutant.sortNAMPositions();
             mutated.push_back( mutant );
         }
     }
@@ -259,6 +277,7 @@ void CubeGA::run()
         );
 
         // Crossover or mutate the individuals
+        std::random_shuffle( sols.begin(), sols.end() );
         uint num_better_children = 0,
             num_worse_children = 0;
         CubeSols children = cutPointCrossover(
@@ -278,13 +297,13 @@ void CubeGA::run()
 
         // Join the elites to the mutated and children
         sols.clear();
+        sols.reserve( elites.size() + mutated.size() + children.size() + selected.size() );
         if( this->config.USE_ELIT )
-        {
-            sols.reserve( elites.size() + mutated.size() + children.size() );
             sols.insert( sols.end(), elites.begin(), elites.end() );
-        }
+
         sols.insert( sols.end(), mutated.begin(), mutated.end() );
         sols.insert( sols.end(), children.begin(), children.end() );
+        sols.insert( sols.end(), selected.begin(), selected.end() );
 
         // Call logger to save statistics
         this->logger.storeStats( sols, num_better_children, num_worse_children );

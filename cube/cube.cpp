@@ -26,6 +26,7 @@ Cube::Cube( Cube && other )
 {
     this->size = other.size;
     this->move_aux_arr = other.move_aux_arr;
+    other.move_aux_arr = 0;
     this->num_moves = other.num_moves;
     for( ushort i = 0; i < Face::_NUM_CUBE_FACES; ++i )
         this->cube[ i ] = std::move( other.cube[ i ] );

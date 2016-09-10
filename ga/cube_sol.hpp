@@ -28,4 +28,6 @@ public:
     std::string toString( unsigned cube_num_moves ) const;
 
     void moveNAMtoTheEnd();
+    void moveNAMtoTheBeginning();
+    void sortNAMPositions();
 };

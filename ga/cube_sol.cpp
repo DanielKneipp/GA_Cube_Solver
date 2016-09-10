@@ -4,6 +4,8 @@
 
 #include "cube/cube.hpp"
 
+#include "ga/utils.hpp"
+
 CubeSolution::CubeSolution()
 {
     for( int i = 0; i < CubeSolution::NUM_MOVES; ++i )
@@ -124,5 +126,62 @@ void CubeSolution::moveNAMtoTheEnd()
             if( !after_NAM )
                 after_NAM = true;
         }
+    }
+}
+
+void CubeSolution::moveNAMtoTheBeginning()
+{
+    bool after_NAM = false;
+    for( 
+        int i = ( int )CubeSolution::NUM_MOVES, j = ( int )CubeSolution::NUM_MOVES; 
+        i >= 0; 
+        --i 
+    )
+    {
+        if( this->moves[ i ] != CubeSolution::NAM )
+        {
+            if( after_NAM )
+            {
+                this->moves[ j ] = this->moves[ i ];
+                this->moves[ i ] = CubeSolution::NAM;
+            }
+            --j;
+        }
+        else
+        {
+            if( !after_NAM )
+                after_NAM = true;
+        }
+    }
+}
+
+void CubeSolution::sortNAMPositions()
+{
+    unsigned NAM_count = 0;
+    std::vector< std::size_t > pos( CubeSolution::NUM_MOVES );
+    int old_moves[ CubeSolution::NUM_MOVES ];
+
+    for( std::size_t i = 0; i < CubeSolution::NUM_MOVES; ++i )
+    {
+        old_moves[ i ] = this->moves[ i ];
+        this->moves[ i ] = -2;
+        pos[ i ] = i;
+        if( old_moves[ i ] == CubeSolution::NAM )
+            ++NAM_count;
+    }
+    
+    for( unsigned i = 0; i < NAM_count; ++i )
+    {
+        std::size_t p = genIntRandNumber< std::size_t >( 0, pos.size() - 1 );
+        this->moves[ pos[ p ] ] = CubeSolution::NAM;
+        pos.erase( pos.begin() + p );
+    }
+
+    for( unsigned i = 0, j = 0; i < CubeSolution::NUM_MOVES; ++i )
+    {
+        while( j < CubeSolution::NUM_MOVES && old_moves[ j ] == CubeSolution::NAM )
+            ++j;
+        if( this->moves[ i ] != CubeSolution::NAM )
+            this->moves[ i ] = old_moves[ j++ ];
     }
 }
