@@ -40,9 +40,17 @@ int main( int argc, char ** argv )
         << "------- CUBEGA INITIATED --------\n" << std::endl;
 
     CubeGA cube_solver;
-    cube_solver.problem.load( argv[ 1 ] );
-    cube_solver.config.load( argv[ 2 ] );
-    cube_solver.setOutputFolder( argv[ 3 ] );
+    try
+    {
+        cube_solver.problem.load( argv[ 1 ] );
+        cube_solver.config.load( argv[ 2 ] );
+        cube_solver.setOutputFolder( argv[ 3 ] );
+    }
+    catch( std::exception & e )
+    {
+        std::cerr << e.what() << std::endl;
+        return ErrorTypes::EXCEPTION;
+    }
 
     std::cout << "Input cube:\n" << std::endl;
     std::cout << cube_solver.problem.cube.getString() << "\n" << std::endl;
