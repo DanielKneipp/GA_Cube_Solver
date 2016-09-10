@@ -5,8 +5,6 @@
 
 #include "utils.hpp"
 
-//#define _MUT_NAM_TO_END_PROB 1.f
-
 #define castMicro( t ) std::chrono::duration_cast< std::chrono::microseconds >( t )
 #define getTimeNow() std::chrono::steady_clock::now()
 
@@ -255,6 +253,31 @@ void CubeGA::run()
     // Starting evolutionary process
     for( uint i = 0; i < this->config.NUM_GENS; ++i )
     {
+        // Crossover or mutate the individuals
+        std::random_shuffle( sols.begin(), sols.end() );
+        uint num_better_children = 0,
+            num_worse_children = 0;
+        CubeSols children = cutPointCrossover(
+            sols,
+            this->config.P_CROSS,
+            num_better_children,
+            num_worse_children,
+            this->config.N_CUT_POINTS
+        );
+
+        CubeSols mutated;
+        // After n generations, start using smartMoves mutation
+        if( i > this->config.NUM_GENS_WITH_FLIP )
+            mutated = smartMovesMutation( sols, this->config.P_MUT );
+        else
+            mutated = moveFlipMutation( sols, this->config.P_MUT, this->config.FLIP_MUT_GEN_PROB );
+
+        // Join the elites to the mutated and children
+        sols.reserve( sols.size() + mutated.size() + children.size() );
+
+        sols.insert( sols.end(), mutated.begin(), mutated.end() );
+        sols.insert( sols.end(), children.begin(), children.end() );
+
         CubeSols elites;
         if( this->config.USE_ELIT )
         {
@@ -270,40 +293,17 @@ void CubeGA::run()
         }
 
         // Select n individuals, with n = this->config.NUM_INDIV - this->config.NUM_ELITES
-        std::random_shuffle( sols.begin(), sols.end() );
-        CubeSols selected = tournament(
+        sols = tournament(
             sols,
             this->config.TOURN_SIZE,
             this->config.NUM_INDIV - ( uint )elites.size()
         );
 
-        // Crossover or mutate the individuals
-        uint num_better_children = 0,
-            num_worse_children = 0;
-        CubeSols children = cutPointCrossover(
-            selected,
-            this->config.P_CROSS,
-            num_better_children,
-            num_worse_children,
-            this->config.N_CUT_POINTS
-        );
-
-        CubeSols mutated;
-        // After n generations, start using smartMoves mutation
-        if( i > this->config.NUM_GENS_WITH_FLIP )
-            mutated = smartMovesMutation( sols, this->config.P_MUT );
-        else
-            mutated = moveFlipMutation( sols, this->config.P_MUT, this->config.FLIP_MUT_GEN_PROB );
-
-        // Join the elites to the mutated and children
-        sols.clear();
-        sols.reserve( elites.size() + mutated.size() + children.size() + selected.size() );
         if( this->config.USE_ELIT )
+        {
+            sols.reserve( sols.size() + elites.size() );
             sols.insert( sols.end(), elites.begin(), elites.end() );
-
-        sols.insert( sols.end(), mutated.begin(), mutated.end() );
-        sols.insert( sols.end(), children.begin(), children.end() );
-        sols.insert( sols.end(), selected.begin(), selected.end() );
+        }
 
         // Call logger to save statistics
         this->logger.storeStats( sols, num_better_children, num_worse_children );

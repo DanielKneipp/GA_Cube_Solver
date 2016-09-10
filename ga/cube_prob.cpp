@@ -63,13 +63,12 @@ Cube CubeProblem::evalSolution( CubeSolution & sol )
             face_colors[ 2 ] = c_tmp.cube[ i ].m[ c_tmp.size / 2 + 1 ][ c_tmp.size / 2 ];
             face_colors[ 3 ] = c_tmp.cube[ i ].m[ c_tmp.size / 2 + 1 ][ c_tmp.size / 2 + 1 ];
             uint counter[ 4 ] = { 0, 0, 0, 0 };
-            for( uint j = 0; j < 4; ++j )
+            for( uint j = 0; j < 3; ++j )
             {
                 for( uint k = j + 1; k < 4; ++k )
                 {
-                    if( face_colors[ i ] == face_colors[ j ] )
+                    if( face_colors[ j ] == face_colors[ k ] )
                     {
-                        counter[ i ]++;
                         counter[ j ]++;
                     }
                 }
@@ -77,7 +76,7 @@ Cube CubeProblem::evalSolution( CubeSolution & sol )
             uint max_val = counter[ 0 ];
             uint max_val_idx = 0;
             bool draw = false;
-            for( uint j = 0; j < 4; ++j )
+            for( uint j = 1; j < 4; ++j )
             {
                 if( counter[ j ] == max_val )
                 {
