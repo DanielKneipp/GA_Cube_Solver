@@ -109,8 +109,8 @@ void CubeGAConfig::load( const std::string& file_name )
     }
     if( count < 13 )
     {
-        throw std::invalid_argument( std::string( "The configuration file " ) + file_name +
-            " does not have enough parameters to fill CubeGAConfig" );
+        throw std::exception( std::string( std::string( "The configuration file " ) + file_name +
+            " does not have enough parameters to fill CubeGAConfig" ).c_str() );
     }
 
     this->is_loaded = true;

@@ -95,7 +95,7 @@ struct Array2D
     void copyTo( Array2D & other ) const
     {
         if( other.cols != this->cols || other.rows != this->rows )
-            throw std::invalid_argument( "Array2D::copyTo -> 2D arrays are not of the same size" );
+            throw std::exception( "Array2D::copyTo -> 2D arrays are not of the same size" );
 
         for( ulong i = 0; i < this->rows; ++i )
             for( ulong j = 0; j < this->cols; ++j )

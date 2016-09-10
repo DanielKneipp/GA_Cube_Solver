@@ -11,8 +11,8 @@ set(TEST_SRCS
 )
 
 set(TEST_ASSETS
-    "in_test_3"
-    "in_test_4"
+    "in_test_3_1"
+    "in_test_4_1"
 )
 
 add_executable(test_all "test_all.cpp" ${TEST_SRCS})

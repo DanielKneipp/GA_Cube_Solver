@@ -94,7 +94,7 @@ void Cube::readFromFile( const std::string& f )
     f_obj.open( f.c_str() );
 
     if( !f_obj.is_open() )
-        throw std::runtime_error( "Cube::readFromFile -> Couldn't read the cube from the specified file" );
+        throw std::exception( "Cube::readFromFile -> Couldn't read the cube from the specified file" );
 
     f_obj >> wrd;
 
@@ -144,7 +144,7 @@ void Cube::readFromFile( const std::string& f )
 void Cube::copyTo( Cube & other ) const
 {
     if( other.size != this->size )
-        throw std::invalid_argument( "Cube::copyTo -> Cubes are not of the same size" );
+        throw std::exception( "Cube::copyTo -> Cubes are not of the same size" );
 
     for( uint i = 0; i < Face::_NUM_CUBE_FACES; ++i )
         this->cube[ i ].copyTo( other.cube[ i ] );
@@ -156,7 +156,7 @@ void Cube::copyTo( Cube & other ) const
 void Cube::makeMove( uint move )
 {
     if( move >= this->num_moves )
-        throw std::invalid_argument( "Cube::makeMove -> move number exceeded the limit" );
+        throw std::exception( "Cube::makeMove -> move number exceeded the limit" );
 
     // 0 is the surface
     uint level = ( uint )std::floorf( ( float )( move ) / 

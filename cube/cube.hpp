@@ -546,28 +546,30 @@ struct SmartMoves
     {
         uint mirrored = m % SmartMoves::MIRROR_OP;
         uint spin = ( m / SmartMoves::MIRROR_OP ) % Face::NUM_SPINS;
-        uint move_type = ( m / SmartMoves::MIRROR_OP / Face::NUM_SPINS ) % SmartMoves::NUM_MOVE_TYPES;
+        uint smart_move_type = ( m / SmartMoves::MIRROR_OP / Face::NUM_SPINS ) % SmartMoves::NUM_MOVE_TYPES;
         uint face = ( m / SmartMoves::MIRROR_OP / Face::NUM_SPINS / SmartMoves::NUM_MOVE_TYPES ) % Face::_NUM_CUBE_FACES;
         uint level = 0;
 
         // This movements don't make any difference on the individual genotype if the level > 0
-        if( move_type != SmartMoves::T_C_F_CW && move_type != SmartMoves::T_C_F_CCW &&
-            move_type != SmartMoves::T_C_S_CW && move_type != SmartMoves::T_C_S_CCW )
+        if( smart_move_type != SmartMoves::T_C_F_CW && smart_move_type != SmartMoves::T_C_F_CCW &&
+            smart_move_type != SmartMoves::T_C_S_CW && smart_move_type != SmartMoves::T_C_S_CCW )
         {
             level = m / ( SmartMoves::NUM_MOVE_TYPES * Face::NUM_SPINS * SmartMoves::MIRROR_OP * Face::_NUM_CUBE_FACES );
         }
 
-        std::vector< uint > moves = SmartMoves::getDefaultMove( ( SmartMoves::TYPES )move_type );
-
-        uint move_level_shift = SmartMoves::NUM_MOVES_PER_LEVEL * level;
+        // Get the corresponding smart move
+        std::vector< uint > moves = SmartMoves::getDefaultMove( ( SmartMoves::TYPES )smart_move_type );
 
         for( uint & move : moves )
         {
             if( face != Face::TYPES::FRONT )
             {
+                // Get the face of the movement
                 uint move_face = move % Face::_NUM_CUBE_FACES;
+                // Get the type of the movement (CW, CCW, 2CW)
                 uint move_type = move / Face::_NUM_CUBE_FACES;
 
+                // Correct the movement faces according to the new front (face)
                 switch( move_face )
                 {
                 case Face::FRONT:
@@ -591,9 +593,9 @@ struct SmartMoves
                 default:
                     break;
                 }
+                //Add the move type shift (CW, CCW, 2CW)
                 move += move_type * Face::_NUM_CUBE_FACES;
             }
-            move += move_level_shift;
         }
 
         if( mirrored == 1 )
