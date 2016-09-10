@@ -20,85 +20,334 @@ struct Face
         RIGHT
     };
 
-    static TYPES getRightOf( TYPES face )
+    static const uint NUM_SPINS = 4;
+    const enum SPIN
     {
-        switch( face )
+        NOP,
+        CW,
+        CW2,
+        CCW,
+    };
+
+    static TYPES getRightOf( TYPES face, Face::SPIN spin = Face::SPIN::NOP )
+    {
+        switch( spin )
         {
-        case TYPES::FRONT:
-            return TYPES::RIGHT;
-        case TYPES::RIGHT:
-            return TYPES::BACK;
-        case TYPES::BACK:
-            return TYPES::LEFT;
-        case TYPES::LEFT:
-            return TYPES::FRONT;
-        case TYPES::UP:
-            return TYPES::RIGHT;
-        case TYPES::DOWN:
-            return TYPES::RIGHT;
+        case Face::SPIN::NOP:
+            switch( face )
+            {
+            case TYPES::FRONT:
+                return TYPES::RIGHT;
+            case TYPES::RIGHT:
+                return TYPES::BACK;
+            case TYPES::BACK:
+                return TYPES::LEFT;
+            case TYPES::LEFT:
+                return TYPES::FRONT;
+            case TYPES::UP:
+                return TYPES::RIGHT;
+            case TYPES::DOWN:
+                return TYPES::RIGHT;
+            default:
+                return face;
+            }
+        case Face::SPIN::CW:
+            switch( face )
+            {
+            case TYPES::FRONT:
+                return TYPES::UP;
+            case TYPES::RIGHT:
+                return TYPES::UP;
+            case TYPES::BACK:
+                return TYPES::UP;
+            case TYPES::LEFT:
+                return TYPES::UP;
+            case TYPES::UP:
+                return TYPES::BACK;
+            case TYPES::DOWN:
+                return TYPES::FRONT;
+            default:
+                return face;
+            }
+        case Face::SPIN::CCW:
+            switch( face )
+            {
+            case TYPES::FRONT:
+                return TYPES::DOWN;
+            case TYPES::RIGHT:
+                return TYPES::DOWN;
+            case TYPES::BACK:
+                return TYPES::DOWN;
+            case TYPES::LEFT:
+                return TYPES::DOWN;
+            case TYPES::UP:
+                return TYPES::FRONT;
+            case TYPES::DOWN:
+                return TYPES::BACK;
+            default:
+                return face;
+            }
+        case Face::SPIN::CW2:
+            switch( face )
+            {
+            case TYPES::FRONT:
+                return TYPES::LEFT;
+            case TYPES::RIGHT:
+                return TYPES::FRONT;
+            case TYPES::BACK:
+                return TYPES::RIGHT;
+            case TYPES::LEFT:
+                return TYPES::BACK;
+            case TYPES::UP:
+                return TYPES::LEFT;
+            case TYPES::DOWN:
+                return TYPES::LEFT;
+            default:
+                return face;
+            }
         default:
             return face;
         }
     }
 
-    static TYPES getLeftOf( TYPES face )
+    static TYPES getLeftOf( TYPES face, Face::SPIN spin = Face::SPIN::NOP )
     {
-        switch( face )
+        switch( spin )
         {
-        case TYPES::FRONT:
-            return TYPES::LEFT;
-        case TYPES::RIGHT:
-            return TYPES::FRONT;
-        case TYPES::BACK:
-            return TYPES::RIGHT;
-        case TYPES::LEFT:
-            return TYPES::BACK;
-        case TYPES::UP:
-            return TYPES::LEFT;
-        case TYPES::DOWN:
-            return TYPES::LEFT;
+        case Face::SPIN::NOP:
+            switch( face )
+            {
+            case TYPES::FRONT:
+                return TYPES::LEFT;
+            case TYPES::RIGHT:
+                return TYPES::FRONT;
+            case TYPES::BACK:
+                return TYPES::RIGHT;
+            case TYPES::LEFT:
+                return TYPES::BACK;
+            case TYPES::UP:
+                return TYPES::LEFT;
+            case TYPES::DOWN:
+                return TYPES::LEFT;
+            default:
+                return face;
+            }
+        case Face::SPIN::CW:
+            switch( face )
+            {
+            case TYPES::FRONT:
+                return TYPES::DOWN;
+            case TYPES::RIGHT:
+                return TYPES::DOWN;
+            case TYPES::BACK:
+                return TYPES::DOWN;
+            case TYPES::LEFT:
+                return TYPES::DOWN;
+            case TYPES::UP:
+                return TYPES::FRONT;
+            case TYPES::DOWN:
+                return TYPES::BACK;
+            default:
+                return face;
+            }
+        case Face::SPIN::CCW:
+            switch( face )
+            {
+            case TYPES::FRONT:
+                return TYPES::UP;
+            case TYPES::RIGHT:
+                return TYPES::UP;
+            case TYPES::BACK:
+                return TYPES::UP;
+            case TYPES::LEFT:
+                return TYPES::UP;
+            case TYPES::UP:
+                return TYPES::BACK;
+            case TYPES::DOWN:
+                return TYPES::FRONT;
+            default:
+                return face;
+            }
+        case Face::SPIN::CW2:
+            switch( face )
+            {
+            case TYPES::FRONT:
+                return TYPES::RIGHT;
+            case TYPES::RIGHT:
+                return TYPES::BACK;
+            case TYPES::BACK:
+                return TYPES::LEFT;
+            case TYPES::LEFT:
+                return TYPES::FRONT;
+            case TYPES::UP:
+                return TYPES::RIGHT;
+            case TYPES::DOWN:
+                return TYPES::RIGHT;
+            default:
+                return face;
+            }
         default:
             return face;
         }
     }
 
-    static TYPES getUpOf( TYPES face )
+    static TYPES getUpOf( TYPES face, Face::SPIN spin = Face::SPIN::NOP )
     {
-        switch( face )
+        switch( spin )
         {
-        case TYPES::FRONT:
-            return TYPES::UP;
-        case TYPES::RIGHT:
-            return TYPES::UP;
-        case TYPES::BACK:
-            return TYPES::UP;
-        case TYPES::LEFT:
-            return TYPES::UP;
-        case TYPES::UP:
-            return TYPES::BACK;
-        case TYPES::DOWN:
-            return TYPES::FRONT;
+        case Face::SPIN::NOP:
+            switch( face )
+            {
+            case TYPES::FRONT:
+                return TYPES::UP;
+            case TYPES::RIGHT:
+                return TYPES::UP;
+            case TYPES::BACK:
+                return TYPES::UP;
+            case TYPES::LEFT:
+                return TYPES::UP;
+            case TYPES::UP:
+                return TYPES::BACK;
+            case TYPES::DOWN:
+                return TYPES::FRONT;
+            default:
+                return face;
+            }
+        case Face::SPIN::CW:
+            switch( face )
+            {
+            case TYPES::FRONT:
+                return TYPES::LEFT;
+            case TYPES::RIGHT:
+                return TYPES::FRONT;
+            case TYPES::BACK:
+                return TYPES::RIGHT;
+            case TYPES::LEFT:
+                return TYPES::BACK;
+            case TYPES::UP:
+                return TYPES::LEFT;
+            case TYPES::DOWN:
+                return TYPES::LEFT;
+            default:
+                return face;
+            }
+        case Face::SPIN::CCW:
+            switch( face )
+            {
+            case TYPES::FRONT:
+                return TYPES::RIGHT;
+            case TYPES::RIGHT:
+                return TYPES::BACK;
+            case TYPES::BACK:
+                return TYPES::LEFT;
+            case TYPES::LEFT:
+                return TYPES::FRONT;
+            case TYPES::UP:
+                return TYPES::RIGHT;
+            case TYPES::DOWN:
+                return TYPES::RIGHT;
+            default:
+                return face;
+            }
+        case Face::SPIN::CW2:
+            switch( face )
+            {
+            case TYPES::FRONT:
+                return TYPES::DOWN;
+            case TYPES::RIGHT:
+                return TYPES::DOWN;
+            case TYPES::BACK:
+                return TYPES::DOWN;
+            case TYPES::LEFT:
+                return TYPES::DOWN;
+            case TYPES::UP:
+                return TYPES::FRONT;
+            case TYPES::DOWN:
+                return TYPES::BACK;
+            default:
+                return face;
+            }
         default:
             return face;
         }
     }
 
-    static TYPES getDownOf( TYPES face )
+    static TYPES getDownOf( TYPES face, Face::SPIN spin = Face::SPIN::NOP )
     {
-        switch( face )
+        switch( spin )
         {
-        case TYPES::FRONT:
-            return TYPES::DOWN;
-        case TYPES::RIGHT:
-            return TYPES::DOWN;
-        case TYPES::BACK:
-            return TYPES::DOWN;
-        case TYPES::LEFT:
-            return TYPES::DOWN;
-        case TYPES::UP:
-            return TYPES::FRONT;
-        case TYPES::DOWN:
-            return TYPES::BACK;
+        case Face::SPIN::NOP:
+            switch( face )
+            {
+            case TYPES::FRONT:
+                return TYPES::DOWN;
+            case TYPES::RIGHT:
+                return TYPES::DOWN;
+            case TYPES::BACK:
+                return TYPES::DOWN;
+            case TYPES::LEFT:
+                return TYPES::DOWN;
+            case TYPES::UP:
+                return TYPES::FRONT;
+            case TYPES::DOWN:
+                return TYPES::BACK;
+            default:
+                return face;
+            }
+        case Face::SPIN::CW:
+            switch( face )
+            {
+            case TYPES::FRONT:
+                return TYPES::RIGHT;
+            case TYPES::RIGHT:
+                return TYPES::BACK;
+            case TYPES::BACK:
+                return TYPES::LEFT;
+            case TYPES::LEFT:
+                return TYPES::FRONT;
+            case TYPES::UP:
+                return TYPES::RIGHT;
+            case TYPES::DOWN:
+                return TYPES::RIGHT;
+            default:
+                return face;
+            }
+        case Face::SPIN::CCW:
+            switch( face )
+            {
+            case TYPES::FRONT:
+                return TYPES::LEFT;
+            case TYPES::RIGHT:
+                return TYPES::FRONT;
+            case TYPES::BACK:
+                return TYPES::RIGHT;
+            case TYPES::LEFT:
+                return TYPES::BACK;
+            case TYPES::UP:
+                return TYPES::LEFT;
+            case TYPES::DOWN:
+                return TYPES::LEFT;
+            default:
+                return face;
+            }
+        case Face::SPIN::CW2:
+            switch( face )
+            {
+            case TYPES::FRONT:
+                return TYPES::UP;
+            case TYPES::RIGHT:
+                return TYPES::UP;
+            case TYPES::BACK:
+                return TYPES::UP;
+            case TYPES::LEFT:
+                return TYPES::UP;
+            case TYPES::UP:
+                return TYPES::BACK;
+            case TYPES::DOWN:
+                return TYPES::FRONT;
+            default:
+                return face;
+            }
         default:
             return face;
         }
@@ -127,7 +376,7 @@ struct Face
             return TYPES::UP;
         default:
             return face;
-        }
+        }        
     }
 };
 
@@ -226,9 +475,9 @@ struct SmartMoves
     static const uint NUM_MOVE_TYPES = 12;
     /// Mirroring operation makes the move space twice bigger.
     static const uint MIRROR_OP = 2;
-    /// 12 (number of default smart moves) * 2 (mirroring) 
+    /// 12 (number of default smart moves) * 2 (mirroring) * 4 (spins)
     /// * 6 (number of faces that could be the front)
-    static const uint NUM_MOVES_PER_LEVEL = 144;
+    static const uint NUM_MOVES_PER_LEVEL = 576;
 
     static std::vector< uint > getDefaultMove( TYPES type )
     {
@@ -296,15 +545,16 @@ struct SmartMoves
     static std::vector< uint > getMove( uint m )
     {
         uint mirrored = m % SmartMoves::MIRROR_OP;
-        uint move_type = ( m / SmartMoves::MIRROR_OP ) % SmartMoves::NUM_MOVE_TYPES;
-        uint face = ( m / SmartMoves::MIRROR_OP / SmartMoves::NUM_MOVE_TYPES ) % Face::_NUM_CUBE_FACES;
+        uint spin = ( m / SmartMoves::MIRROR_OP ) % Face::NUM_SPINS;
+        uint move_type = ( m / SmartMoves::MIRROR_OP / Face::NUM_SPINS ) % SmartMoves::NUM_MOVE_TYPES;
+        uint face = ( m / SmartMoves::MIRROR_OP / Face::NUM_SPINS / SmartMoves::NUM_MOVE_TYPES ) % Face::_NUM_CUBE_FACES;
         uint level = 0;
 
         // This movements don't make any difference on the individual genotype if the level > 0
         if( move_type != SmartMoves::T_C_F_CW && move_type != SmartMoves::T_C_F_CCW &&
             move_type != SmartMoves::T_C_S_CW && move_type != SmartMoves::T_C_S_CCW )
         {
-            level = m / ( SmartMoves::NUM_MOVE_TYPES * SmartMoves::MIRROR_OP * Face::_NUM_CUBE_FACES );
+            level = m / ( SmartMoves::NUM_MOVE_TYPES * Face::NUM_SPINS * SmartMoves::MIRROR_OP * Face::_NUM_CUBE_FACES );
         }
 
         std::vector< uint > moves = SmartMoves::getDefaultMove( ( SmartMoves::TYPES )move_type );
@@ -327,16 +577,16 @@ struct SmartMoves
                     move = Face::getBackOf( ( Face::TYPES )face );
                     break;
                 case Face::UP:
-                    move = Face::getUpOf( ( Face::TYPES )face );
+                    move = Face::getUpOf( ( Face::TYPES )face, ( Face::SPIN )spin );
                     break;
                 case Face::DOWN:
-                    move = Face::getDownOf( ( Face::TYPES )face );
+                    move = Face::getDownOf( ( Face::TYPES )face, ( Face::SPIN )spin );
                     break;
                 case Face::LEFT:
-                    move = Face::getLeftOf( ( Face::TYPES )face );
+                    move = Face::getLeftOf( ( Face::TYPES )face, ( Face::SPIN )spin );
                     break;
                 case Face::RIGHT:
-                    move = Face::getRightOf( ( Face::TYPES )face );
+                    move = Face::getRightOf( ( Face::TYPES )face, ( Face::SPIN )spin );
                     break;
                 default:
                     break;

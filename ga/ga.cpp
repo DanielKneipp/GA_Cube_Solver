@@ -174,7 +174,7 @@ CubeSols CubeGA::smartMovesMutation( CubeSols & sols, float prob_m )
     for( CubeSolution & sol : sols )
     {
         float p = genRealRandNumber< float >( 0, 1 );
-        if( p > prob_m )
+        if( p < prob_m )
         {
             CubeSolution mutant = sol;
             float p_NAM = genRealRandNumber< float >( 0, 1 );
@@ -270,6 +270,7 @@ void CubeGA::run()
         }
 
         // Select n individuals, with n = this->config.NUM_INDIV - this->config.NUM_ELITES
+        std::random_shuffle( sols.begin(), sols.end() );
         CubeSols selected = tournament(
             sols,
             this->config.TOURN_SIZE,
@@ -277,7 +278,6 @@ void CubeGA::run()
         );
 
         // Crossover or mutate the individuals
-        std::random_shuffle( sols.begin(), sols.end() );
         uint num_better_children = 0,
             num_worse_children = 0;
         CubeSols children = cutPointCrossover(
@@ -289,7 +289,7 @@ void CubeGA::run()
         );
 
         CubeSols mutated;
-        // After 30% of the generations, start using smartMoves mutation
+        // After n generations, start using smartMoves mutation
         if( i > this->config.NUM_GENS_WITH_FLIP )
             mutated = smartMovesMutation( sols, this->config.P_MUT );
         else

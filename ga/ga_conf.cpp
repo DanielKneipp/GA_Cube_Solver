@@ -63,6 +63,8 @@ void CubeGAConfig::load( const std::string& file_name )
             {
                 file >> tmpString;
                 this->NUM_ELITES = static_cast< uint >( std::stoi( tmpString ) );
+                if( this->NUM_ELITES % 2 != 0 )
+                    throw std::exception( "Number of elites has to be even" );
                 count++;
             }
             if( tmpString == "N_CUT_POINTS:" )
