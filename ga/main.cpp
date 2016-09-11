@@ -29,7 +29,7 @@ int main( int argc, char ** argv )
         {
             num_execs = std::stoi( argv[ 4 ] );
         }
-        catch( std::exception& e )
+        catch( std::runtime_error& e )
         {
             std::cerr << e.what() << std::endl;
             return ErrorTypes::EXCEPTION;
@@ -46,7 +46,7 @@ int main( int argc, char ** argv )
         cube_solver.config.load( argv[ 2 ] );
         cube_solver.setOutputFolder( argv[ 3 ] );
     }
-    catch( std::exception & e )
+    catch( std::runtime_error & e )
     {
         std::cerr << e.what() << std::endl;
         return ErrorTypes::EXCEPTION;
@@ -76,7 +76,7 @@ int main( int argc, char ** argv )
             std::cout << "Cube:\n" << std::endl;
             std::cout << c.getString() << "\n" << std::endl;
         }
-        catch( std::exception& e )
+        catch( std::runtime_error& e )
         {
             std::cerr << e.what() << std::endl;
             return ErrorTypes::EXCEPTION;

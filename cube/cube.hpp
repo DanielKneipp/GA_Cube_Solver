@@ -10,7 +10,7 @@
 struct Face
 {
     static const ushort _NUM_CUBE_FACES = 6;
-    const enum TYPES
+    enum TYPES
     {
         FRONT,
         BACK,
@@ -21,7 +21,7 @@ struct Face
     };
 
     static const uint NUM_SPINS = 4;
-    const enum SPIN
+    enum SPIN
     {
         NOP,
         CW,
@@ -420,7 +420,7 @@ private:
 struct Move
 {
     static const ushort NUM_MOVE_TYPES = 3;
-    const enum TYPES
+    enum TYPES
     {
         ROT90,
         ROT90I,
@@ -444,7 +444,7 @@ struct Move
 
 struct SmartMoves
 {
-    const enum TYPES
+    enum TYPES
     {
         /// Two edge flip cw (clockwise)
         T_E_F_CW,

@@ -236,7 +236,7 @@ void CubeGA::run()
 {
     // Verifies if the configuration was loaded
     if( !this->config.is_loaded )
-        throw std::exception( "Configuration wasn't loaded" );
+        throw std::runtime_error( "Configuration wasn't loaded" );
 
     // Create output file name with path
     this->logger.defineOutputFileName( this->config, this->problem );

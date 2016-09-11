@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <ctime>
+#include <cmath>
 #include <sstream>
 #include <fstream>
 #include <iomanip>
@@ -57,7 +58,7 @@ std::ofstream openOutFile( std::string path_file )
 
     if( !out_file.is_open() )
     {
-        throw std::exception( std::string(
+        throw std::runtime_error( std::string(
             std::string( "The output file (" ) += path_file += ") couldn't be opened"
         ).c_str() );
     }
@@ -111,7 +112,7 @@ void Logger::storeStats(
         accum += ( s.fitness - mean ) * ( s.fitness - mean );
     } );
 
-    float stddev = sqrt( accum / ( sols.size() - 1 ) );
+    float stddev = std::sqrt( accum / ( sols.size() - 1 ) );
 
     // Write to the output file
     std::ofstream out_file = openOutFile( this->output_folder_file );

@@ -25,7 +25,7 @@ void CubeGAConfig::load( const std::string& file_name )
                 file >> tmpString;
                 this->NUM_INDIV = static_cast< uint >( std::stoul( tmpString ) );
                 if( this->NUM_INDIV % 2 != 0 )
-                    throw std::exception( "Number of individuals has to be even" );
+                    throw std::runtime_error( "Number of individuals has to be even" );
 
                 count++;
             }
@@ -64,7 +64,7 @@ void CubeGAConfig::load( const std::string& file_name )
                 file >> tmpString;
                 this->NUM_ELITES = static_cast< uint >( std::stoi( tmpString ) );
                 if( this->NUM_ELITES % 2 != 0 )
-                    throw std::exception( "Number of elites has to be even" );
+                    throw std::runtime_error( "Number of elites has to be even" );
                 count++;
             }
             if( tmpString == "N_CUT_POINTS:" )
@@ -109,7 +109,7 @@ void CubeGAConfig::load( const std::string& file_name )
     }
     if( count < 13 )
     {
-        throw std::exception( std::string( std::string( "The configuration file " ) + file_name +
+        throw std::runtime_error( std::string( std::string( "The configuration file " ) + file_name +
             " does not have enough parameters to fill CubeGAConfig" ).c_str() );
     }
 
