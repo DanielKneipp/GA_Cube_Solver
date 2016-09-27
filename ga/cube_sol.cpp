@@ -79,7 +79,7 @@ bool CubeSolution::operator==( const CubeSolution & other ) const
 
 std::string CubeSolution::toString() const
 {
-    std::string str( std::to_string( this->fitness ) );
+    std::string str( std::to_string( this->fitness ) + " __ " );
     for( unsigned i = 0; i < CubeSolution::NUM_MOVES; ++i )
         str += std::to_string( this->moves[ i ] ) + " ";
 
@@ -88,7 +88,7 @@ std::string CubeSolution::toString() const
 
 std::string CubeSolution::toString( unsigned cube_num_moves ) const
 {
-    std::string str( std::to_string( this->fitness ) );
+    std::string str( std::to_string( this->fitness ) + " __ " );
     for( unsigned i = 0; i < CubeSolution::NUM_MOVES; ++i )
     {
         if( this->moves[ i ] > ( int )cube_num_moves )
