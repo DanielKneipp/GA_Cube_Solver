@@ -22,7 +22,12 @@ add_executable(cube_ga_solver ${ga_cpps} ${ga_hpps})
 target_link_libraries(cube_ga_solver ${CUBE_LIB})
 set_property(TARGET cube_ga_solver PROPERTY PROJECT_LABEL "ga")
 
+add_executable(test_solution "test_solution.cpp" "cube_prob.hpp" "cube_prob.cpp")
+target_link_libraries(test_solution ${CUBE_LIB})
+set_property(TARGET test_solution PROPERTY PROJECT_LABEL "solution_tester")
+
 install(TARGETS cube_ga_solver DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(TARGETS test_solution DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(FILES plot_fit_data.gp DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(FILES plot_ind_data.gp DESTINATION ${CMAKE_INSTALL_PREFIX})
 

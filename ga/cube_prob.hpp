@@ -20,6 +20,29 @@ public:
     ~CubeProblem();
 
     Cube evalSolution( CubeSolution & sol );
+    // ********************************************************************************
+    /// <summary>
+    /// Evaluate the solution getting some statistics from it
+    /// </summary>
+    /// <param name="moves">Individual chromosome</param>
+    /// <param name="fitness">Output parameter with the individual fitness</param>
+    /// <param name="num_moves">Output parameter specifying the number of 
+    /// movements of the individual</param>
+    /// <param name="num_diff_facelets">Output parameter with the number of 
+    /// squares that have different color from the center (of their faces)</param>
+    /// <param name="freq">Distance metric from the current cube state to 
+    /// the desired result (solved cube)</param>
+    /// <returns>Resultant cube</returns>
+    /// <created>Daniel Kneipp,9/27/2016</created>
+    /// <changed>Daniel Kneipp,9/27/2016</changed>
+    // ********************************************************************************
+    Cube evalSolution( 
+        std::vector< int > & moves, 
+        float & fitness, 
+        uint & num_moves,
+        uint & num_diff_facelets,
+        uint & freq
+    );
     void load( const std::string & file );
 
 private:
