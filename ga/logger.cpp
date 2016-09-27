@@ -131,15 +131,15 @@ void Logger::storeStats(
 void Logger::storeSolution( 
     CubeSolution sol, 
     const std::string & name,
-    uint cube_num_sols
+    uint cube_num_moves
 )
 {
     std::ofstream out_file = openOutFile( this->output_folder_file + ".cubesols" );
 
-    if( cube_num_sols == 0 )
+    if( cube_num_moves == 0 )
         out_file << name << ": " << sol.toString();
     else // Translate the offset and print smart moves entirely and not its id
-        out_file << name << ": " << sol.toString( cube_num_sols ); 
+        out_file << name << ": " << sol.toString( cube_num_moves ); 
 
     out_file.close();
 }
